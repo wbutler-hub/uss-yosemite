@@ -21,10 +21,10 @@ jobs:
       with:
         java-version: 1.8
     - name: Validate with Maven
-      run: mvn validate
+      run: mvn validate --file *.pom
     - name: Compile with Maven
-      run: mvn compile
+      run: mvn compile --file *.pom
     - name: Test with Maven
-      run: mvn test
+      run: mvn test --file *.pom
     - name: Package with Maven
-      run: mvn package
+      run: mvn package --file *.pom
