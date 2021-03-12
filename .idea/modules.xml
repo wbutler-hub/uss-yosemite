@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/0027-robot-worlds.iml" filepath="$PROJECT_DIR$/.idea/0027-robot-worlds.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Robot_Worlds/Robot_Worlds.iml" filepath="$PROJECT_DIR$/Robot_Worlds/Robot_Worlds.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
     </modules>
   </component>
 </project>

@@ -21,10 +21,10 @@ jobs:
       with:
         java-version: 15
     - name: Validate with Maven
-      run: mvn validate --file /home/runner/work/0027-robot-worlds/0027-robot-worlds/Robot_Worlds/pom.xml
+      run: mvn validate --file pom.xml
     - name: Compile with Maven
-      run: mvn compile --file /home/runner/work/0027-robot-worlds/0027-robot-worlds/Robot_Worlds/pom.xml
+      run: mvn compile --file pom.xml
     - name: Test with Maven
-      run: mvn test --file /home/runner/work/0027-robot-worlds/0027-robot-worlds/Robot_Worlds/pom.xml
+      run: mvn test --file pom.xml
     - name: Package with Maven
-      run: mvn package --file /home/runner/work/0027-robot-worlds/0027-robot-worlds/Robot_Worlds/pom.xml
+      run: mvn package --file pom.xml
