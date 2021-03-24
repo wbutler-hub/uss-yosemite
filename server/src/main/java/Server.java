@@ -2,6 +2,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.Properties;
 
 public class Server {
@@ -14,12 +16,11 @@ public class Server {
 
     private void getConfig() throws IOException {
         Properties prop = new Properties();
-        InputStream propertyStream = new FileInputStream("server/resources/config.properties");
-
-        if(propertyStream != null){
+        URL configPath = this.getClass().getClassLoader().getResource("config.properties");
+        if (configPath.getPath() != null) {
+            InputStream propertyStream = new FileInputStream(configPath.getPath());
             prop.load(propertyStream);
-        }
-        else {
+        } else {
             throw new FileNotFoundException("config.properties not found.");
         }
         this.width = Integer.parseInt(prop.getProperty("width"));

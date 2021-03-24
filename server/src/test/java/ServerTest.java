@@ -7,9 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ServerTest {
     @Test
     public void testConfig() throws IOException {
-        Server s= new Server();
-        System.out.println(s.getHeight());
-//        assertEquals(200, s.getWidth());
-//        assertEquals(200, s.getHeight());
+        Server s = new Server();
+        assertEquals(200, s.getWidth());
+        assertEquals(200, s.getHeight());
     }
 }
