@@ -10,5 +10,6 @@ class ServerTest {
         Server s = new Server();
         assertEquals(200, s.getWidth());
         assertEquals(200, s.getHeight());
+        assertEquals(20, s.getVisibility());
     }
 }
