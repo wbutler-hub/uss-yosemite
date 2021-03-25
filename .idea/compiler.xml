@@ -11,10 +11,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="0027-robot-worlds" target="15" />
-      <module name="client" target="15" />
+      <module name="0027-robot-worlds" target="11" />
+      <module name="client" target="11" />
       <module name="Robot_Worlds" target="15" />
-      <module name="server" target="15" />
+      <module name="server" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
