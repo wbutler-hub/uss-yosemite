@@ -3,12 +3,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.Properties;
 
 public class Server {
     private int width;
     private int height;
+    private int visibility;
 
     public Server() throws IOException{
         getConfig();
@@ -17,7 +17,7 @@ public class Server {
     private void getConfig() throws IOException {
         Properties prop = new Properties();
         URL configPath = this.getClass().getClassLoader().getResource("config.properties");
-        if (configPath.getPath() != null) {
+        if ((configPath != null ? configPath.getPath() : null) != null) {
             InputStream propertyStream = new FileInputStream(configPath.getPath());
             prop.load(propertyStream);
         } else {
@@ -25,6 +25,7 @@ public class Server {
         }
         this.width = Integer.parseInt(prop.getProperty("width"));
         this.height = Integer.parseInt(prop.getProperty("height"));
+        this.visibility = Integer.parseInt(prop.getProperty("visibility"));
     }
 
 
@@ -39,5 +40,9 @@ public class Server {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getVisibility() {
+        return visibility;
     }
 }
