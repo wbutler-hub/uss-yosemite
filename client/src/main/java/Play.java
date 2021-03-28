@@ -3,11 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Play {
     private static Scanner scanner;
     private static String response;
+    private static String reply;
     private static final String SERVER_HOST= "localhost";
     private static final int SERVER_PORT= 5000;
 
@@ -21,8 +23,17 @@ public class Play {
 
     public static void Play() {
         scanner = new Scanner(System.in);
+        String name;
 
-        String name = getInput("What do you want to name your robot?");
+        while (true) {
+            name = getInput("What do you want to name your robot?");
+            dumpResponse(name.toLowerCase());
+            if (reply.equals("This username is already taken")) {
+            }
+            else {
+                break;
+            }
+        }
         System.out.println("Hello Kiddo!");
 
 
@@ -44,6 +55,9 @@ public class Play {
         } while (shouldContinue);
     }
 
+    //
+
+    //
     public static void dumpResponse(String response) {
         try (
                 Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
@@ -54,6 +68,7 @@ public class Play {
             out.println(response);
             out.flush();
             String messageFromServer = in.readLine();
+            reply = messageFromServer;
             System.out.println("Response: " + messageFromServer);
         } catch (IOException e) {
             e.printStackTrace();

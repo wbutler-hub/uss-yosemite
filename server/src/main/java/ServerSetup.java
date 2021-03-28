@@ -1,8 +1,7 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ServerSetup implements Runnable{
     public static final int PORT = 5000;
@@ -23,9 +22,22 @@ public class ServerSetup implements Runnable{
     public void run() {
         try {
             String messageFromClient;
+            boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
             while((messageFromClient = in.readLine()) != null) {
-                System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-                out.println("Thanks for this message: "+messageFromClient);
+                requestUsed = messageFromClient.contains("{");
+                if (requestUsed) {
+                    System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
+                    out.println("Thanks for this message: " + messageFromClient);
+                }
+                else {
+                    if(Server.userNames.contains(messageFromClient)) {
+                        out.println("This username is already taken");
+                    }
+                    else {
+                        Server.userNames.add(messageFromClient);
+                        out.println("Username accepted!");
+                    }
+                }
             }
         } catch(IOException ex) {
             System.out.println("Shutting down single client server");
@@ -38,5 +50,7 @@ public class ServerSetup implements Runnable{
         try { in.close(); out.close();
         } catch(IOException ex) {}
     }
+
+
 }
 

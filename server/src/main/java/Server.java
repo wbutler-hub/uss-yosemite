@@ -5,9 +5,11 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class Server {
+    public final static ArrayList<String> userNames = new ArrayList<>();
     private int width;
     private int height;
     private int visibility;
