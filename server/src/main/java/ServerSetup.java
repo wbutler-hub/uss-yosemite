@@ -1,3 +1,6 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -8,6 +11,7 @@ public class ServerSetup implements Runnable{
     private final BufferedReader in;
     private final PrintStream out;
     private final String clientMachine;
+    private JSONObject JsonData;
 
     public ServerSetup(Socket socket) throws IOException {
         clientMachine = socket.getInetAddress().getHostName();
@@ -21,11 +25,24 @@ public class ServerSetup implements Runnable{
 
     public void run() {
         try {
+            Robot robot = new SniperRobot("kay");
+            Command command;
             String messageFromClient;
+            String jsonString; //String that was converted from a string to a JsonObject
             boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
             while((messageFromClient = in.readLine()) != null) {
                 requestUsed = messageFromClient.contains("{");
                 if (requestUsed) {
+                    JsonData = new JSONObject(messageFromClient);
+                    jsonString = getCommand().concat(" ");
+                    for (int i = 0; i < getArgument().length(); i++) {
+                        jsonString = jsonString.concat(getArgument().get(i).toString());
+                    }
+                    jsonString = jsonString.trim();
+                    command = Command.create(jsonString);
+                    boolean shouldContinue = robot.handleCommand(command);
+                    System.out.println(robot.getPosition().getX()+" "+robot.getPosition().getY());
+                    System.out.println(robot.getCurrentDirection());
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
                 }
@@ -51,6 +68,9 @@ public class ServerSetup implements Runnable{
         } catch(IOException ex) {}
     }
 
+    public String getCommand(){return (String) this.JsonData.get("command");}
+
+    public JSONArray getArgument(){return (JSONArray) this.JsonData.get("arguments");}
 
 }
 
