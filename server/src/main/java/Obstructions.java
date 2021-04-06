@@ -35,6 +35,13 @@ public abstract class Obstructions {
         return this.size;
     }
 
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
 
     public boolean blocksPosition(Position position) {
         Boolean checkY = this.y <= position.getY() && (this.y + 4) >= position.getY();

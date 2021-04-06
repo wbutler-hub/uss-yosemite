@@ -10,32 +10,13 @@ import java.util.Properties;
 
 public class Server {
     public final static ArrayList<String> userNames = new ArrayList<>();
-    private int width;
-    private int height;
-    private int visibility;
+    private static World world;
 
-    public Server() throws IOException{
-        getConfig();
-    }
-
-    private void getConfig() throws IOException {
-        Properties prop = new Properties();
-        URL configPath = this.getClass().getClassLoader().getResource("config.properties");
-        if ((configPath != null ? configPath.getPath() : null) != null) {
-            InputStream propertyStream = new FileInputStream(configPath.getPath());
-            prop.load(propertyStream);
-        } else {
-            throw new FileNotFoundException("config.properties not found.");
-        }
-        this.width = Integer.parseInt(prop.getProperty("width"));
-        this.height = Integer.parseInt(prop.getProperty("height"));
-        this.visibility = Integer.parseInt(prop.getProperty("visibility"));
-    }
 
 
     public static void main(String[] args) throws IOException {
-        Server s = new Server();
-        System.out.println(s.getHeight());
+        world = new World();
+
 
         ServerSocket serverSocket = new ServerSocket( ServerSetup.PORT);
         System.out.println("Server running & waiting for client connections.");
@@ -53,15 +34,8 @@ public class Server {
         }
     }
 
-    public int getWidth() {
-        return width;
+    public static World getWorld() {
+        return world;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public int getVisibility() {
-        return visibility;
-    }
 }
