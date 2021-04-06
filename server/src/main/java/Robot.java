@@ -1,4 +1,6 @@
 import java.util.List;
+import java.time.Duration;
+import java.util.Random;
 
 
 public abstract class Robot {
@@ -8,16 +10,24 @@ public abstract class Robot {
     private Position position;
     private Direction currentDirection;
     private String status;
+    private World world;
+    private final String name;
+
     private int shield;
     private int shots;
-    private final String name;
     private int maxNumberOfShots;
     private int maxShield;
     private boolean alive;
+    private final Random random = new Random();
+
+    private int width;
+    private int height;
 
 
-    private final Position TOP_LEFT = new Position(-100,200);
-    private final Position BOTTOM_RIGHT = new Position(100,-200);
+    public final Position START;
+
+    private final Position TOP_LEFT;
+    private final Position BOTTOM_RIGHT;
 
 //    private List<Obstacle> obstacleList;
 
@@ -36,9 +46,31 @@ public abstract class Robot {
     public Robot(String name) {
 
         this.name = name;
-        this.position = this.CENTRE;
+        this.world = Server.getWorld();
         this.currentDirection = Direction.NORTH;
         this.alive = true;
+        this.height = world.getHeight();
+        this.width = world.getWidth();
+        TOP_LEFT = new Position((-this.width),this.height);
+        BOTTOM_RIGHT =new Position(this.width,(-this.height));
+        START = new Position(random.nextInt(this.width + this.width) - this.width,
+                random.nextInt(this.height + this.height) - this.height);
+        this.position = this.START;
+    }
+
+    public Robot(String name, World world) {
+
+        this.name = name;
+        this.world = world;
+        this.currentDirection = Direction.NORTH;
+        this.alive = true;
+        this.height = world.getHeight();
+        this.width = world.getWidth();
+        TOP_LEFT = new Position((-this.width),this.height);
+        BOTTOM_RIGHT =new Position(this.width,(-this.height));
+        START = new Position(random.nextInt(this.width + this.width) - this.width,
+                random.nextInt(this.height + this.height) - this.height);
+        this.position = this.START;
     }
 
 
@@ -61,14 +93,23 @@ public abstract class Robot {
 
         Position newPosition = new Position(newX, newY);
 
-//        for (Obstacle obstacle: obstacleList) {
-//            if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
-//                return false;
-//            }
-//        }
+        for (Obstacle obstacle: world.getObstacleList()) {
+            if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
+                return false;
+            }
+        }
+
+        for (Pit pit: world.getPitList()) {
+            if (pit.blocksPosition(newPosition) || pit.blocksPath(this.position, newPosition)) {
+                this.alive = false;
+                this.position = new Position(pit.getBottomLeftPosition().getX(),pit.getBottomLeftPosition().getX());
+                return true;
+            }
+        }
 
         if (isNewPositionAllowed(newPosition)){
             this.position = newPosition;
+
             return true;
         }
         return false;
@@ -130,10 +171,14 @@ public abstract class Robot {
         this.status = status;
     }
 
-    public Robot create(String name, String type) {
+    public static Robot create(String name, String type) {
         switch (type) {
+            case "test":
+                return new StandardRobot(name);
             case "sniper":
                 return new SniperRobot(name);
+            case "robot":
+                return new StandardRobot(name);
 
 
             default:
@@ -141,11 +186,18 @@ public abstract class Robot {
         }
     }
 
-//    public void reset() {
-//        this.currentDirection = IWorld.Direction.UP;
-//        this.position = IWorld.CENTRE;
-//        this.obstacleList.clear();
-//    }
+    public static Robot create(String name, String type, World world) {
+        switch (type) {
+            case "test":
+                return new StandardRobot(name,world);
+
+            default:
+                throw new IllegalArgumentException("Unsupported type: "+type );
+        }
+    }
+
+    public String getStatus() { return status; }
+
 
 
     }
