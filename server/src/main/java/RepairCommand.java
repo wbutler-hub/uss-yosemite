@@ -1,11 +1,12 @@
 public class RepairCommand extends Command{
-    public RepairCommand(String name) {
-        super(name);
+    public RepairCommand() {
+        super("repair");
     }
 
     @Override
     public boolean execute(Robot target) {
-        target.updateShield("");
+        target.updateShield("repair");
+        target.setStatus("REPAIR");
         return true;
     }
 }

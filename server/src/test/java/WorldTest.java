@@ -13,7 +13,7 @@ public class WorldTest {
         assertEquals(200, world.getHeight());
         assertEquals(20, world.getVisibility());
         assertEquals(3, world.getReloadSpeed());
-        assertEquals(3, world.getRepairSpeed());
+        assertEquals(5, world.getRepairSpeed());
         assertEquals(3, world.getMineSpeed());
 
     }

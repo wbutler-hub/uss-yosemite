@@ -66,4 +66,20 @@ public class RobotTest {
         assertEquals(expectedPosition.getY(), robot.getPosition().getY());
         assertEquals("Moved forward by 10 steps.", robot.getStatus());
     }
+
+    @Test
+    void repair() throws IOException {
+        Robot robot;
+        World world = new World();
+        world.setObstructionsEmpty();
+        robot = Robot.create("Dummy","test", world );
+        int expectedShield = 3;
+        robot.updateShield("shot");
+        robot.updateShield("shot");
+        assertEquals(1,robot.getShield());
+        RepairCommand command = new RepairCommand();
+        assertTrue(robot.handleCommand(command));
+        assertEquals(expectedShield,robot.getShield());
+        assertEquals("REPAIR", robot.getStatus());
+    }
 }

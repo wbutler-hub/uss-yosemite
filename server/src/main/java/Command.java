@@ -41,6 +41,8 @@ public abstract class Command {
                 if (args[1].equals("left")) {
                     return new LeftCommand();
                 }
+            case "repair":
+                return new RepairCommand();
 
             default:
                 throw new IllegalArgumentException("Unsupported command: " + instruction);
