@@ -1,6 +1,6 @@
 public class SniperRobot extends Robot{
     private final int maxNumberOfShots = 1;
-    private final int maxShield = 1;
+    private final int maxShield = 3;
 
 
     public SniperRobot(String name) {

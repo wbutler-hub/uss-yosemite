@@ -99,4 +99,5 @@ public class World {
     public ArrayList<Pit> getPitList() {
         return pitList;
     }
+
 }

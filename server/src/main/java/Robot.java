@@ -18,6 +18,7 @@ public abstract class Robot {
     private int maxNumberOfShots;
     private int maxShield;
     private boolean alive;
+    private final int repairSpeed;
     private final Random random = new Random();
 
     private int width;
@@ -51,6 +52,7 @@ public abstract class Robot {
         this.alive = true;
         this.height = world.getHeight();
         this.width = world.getWidth();
+        this.repairSpeed = world.getRepairSpeed();
         TOP_LEFT = new Position((-this.width),this.height);
         BOTTOM_RIGHT =new Position(this.width,(-this.height));
         START = new Position(random.nextInt(this.width + this.width) - this.width,
@@ -66,6 +68,7 @@ public abstract class Robot {
         this.alive = true;
         this.height = world.getHeight();
         this.width = world.getWidth();
+        this.repairSpeed = world.getRepairSpeed();
         TOP_LEFT = new Position((-this.width),this.height);
         BOTTOM_RIGHT =new Position(this.width,(-this.height));
         START = new Position(random.nextInt(this.width + this.width) - this.width,
@@ -124,6 +127,15 @@ public abstract class Robot {
             alive = false;
         }
         if (option.equals("repair")) {
+            try
+            {
+                Long millisecs = this.repairSpeed * 1000L;
+                Thread.sleep(millisecs);
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
             shield = maxShield;
         }
 
@@ -199,6 +211,8 @@ public abstract class Robot {
     public String getStatus() { return status; }
 
 
-
+    public int getShield() {
+        return shield;
     }
+}
 
