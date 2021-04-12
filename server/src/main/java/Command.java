@@ -43,6 +43,8 @@ public abstract class Command {
                 }
             case "repair":
                 return new RepairCommand();
+            case "mine":
+                return new MineCommand();
 
             default:
                 throw new IllegalArgumentException("Unsupported command: " + instruction);

@@ -5,6 +5,7 @@ import java.util.Random;
 
 public abstract class Robot {
 
+
     public final Position CENTRE = new Position(0,0);
 
     private Position position;
@@ -95,6 +96,7 @@ public abstract class Robot {
         }
 
         Position newPosition = new Position(newX, newY);
+        System.out.println(world.getRobots());
 
         for (Obstacle obstacle: world.getObstacleList()) {
             if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
@@ -106,6 +108,14 @@ public abstract class Robot {
             if (pit.blocksPosition(newPosition) || pit.blocksPath(this.position, newPosition)) {
                 this.alive = false;
                 this.position = new Position(pit.getBottomLeftPosition().getX(),pit.getBottomLeftPosition().getX());
+                return true;
+            }
+        }
+
+        for (Mine mine: world.getMineList()) {
+            if (mine.blocksPosition(newPosition) || mine.blocksPath(this.position, newPosition)) {
+                this.position = new Position(mine.getBottomLeftPosition().getX(),mine.getBottomLeftPosition().getX());
+                this.updateShield("mine");
                 return true;
             }
         }
@@ -123,7 +133,10 @@ public abstract class Robot {
         if(option.equals("shot")) {
             shield -= 1;
         }
-        if (shield == 0 && option.equals("shot")) {
+        if(option.equals("mine")) {
+            shield -= 3;
+        }
+        if (shield < 0) {
             alive = false;
         }
         if (option.equals("repair")) {
@@ -139,6 +152,17 @@ public abstract class Robot {
             shield = maxShield;
         }
 
+    }
+
+    public void setMine() {
+        int originalShield = this.shield;
+        this.shield = 0;
+        Position position1 = new Position(this.position.getX() + 4,
+                this.position.getY()-4);
+        Mine mine = new Mine(this.position,position1);
+        world.addMine(mine);
+        this.shield = originalShield;
+        this.updatePosition(1);
     }
 
     public void updateShots(String option) {
@@ -210,6 +234,9 @@ public abstract class Robot {
 
     public String getStatus() { return status; }
 
+    public void addRobotPair() {
+        world.addRobotPair(this.name,this);
+    }
 
     public int getShield() {
         return shield;
