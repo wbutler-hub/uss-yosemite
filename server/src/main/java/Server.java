@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.HashMap;
 
 public class Server {
     public final static ArrayList<String> userNames = new ArrayList<>();
+//    HashMap<String, Robot> robots = new HashMap<String, Robot>();
+
     private static World world;
 
 

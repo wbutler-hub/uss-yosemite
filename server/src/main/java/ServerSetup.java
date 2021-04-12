@@ -1,5 +1,6 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONString;
 
 import java.io.*;
 import java.net.Socket;
@@ -26,7 +27,7 @@ public class ServerSetup implements Runnable{
 
     public void run() {
         try {
-            Robot robot = new SniperRobot("kay");
+            Robot robot = new StandardRobot("Init");
             Command command;
             response = new Response(robot);
             String messageFromClient;
@@ -36,20 +37,27 @@ public class ServerSetup implements Runnable{
                 requestUsed = messageFromClient.contains("{");
                 if (requestUsed) {
                     JsonData = new JSONObject(messageFromClient);
-                    jsonString = getCommand().concat(" ");
+                    jsonString = getCommand();
+                    if (jsonString.equals("launch")) {
+                        robot = Robot.create(getName(),getArgument().get(0).toString());
+                        robot.addRobotPair();
+                        continue;
+                    }
+                    jsonString = jsonString.concat(" ");
                     for (int i = 0; i < getArgument().length(); i++) {
                         jsonString = jsonString.concat(getArgument().get(i).toString());
                     }
                     jsonString = jsonString.trim();
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
-                    System.out.println(robot.getShield());
+                    System.out.println(robot.getPosition().getX());
+                    System.out.println(robot.getPosition().getY());
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
-                    response.setStatus();
-                    response.setResponse();
-                    response.setMovement(jsonString);
-                    System.out.println(response.getStatus());
+//                    response.setStatus();
+//                    response.setResponse();
+//                    response.setMovement(jsonString);
+//                    System.out.println(response.getStatus());
                 }
                 else {
                     if(Server.userNames.contains(messageFromClient)) {
@@ -73,9 +81,12 @@ public class ServerSetup implements Runnable{
         } catch(IOException ex) {}
     }
 
-    public String getCommand(){return (String) this.JsonData.get("command");}
+    private String getCommand(){return (String) this.JsonData.get("command");}
 
-    public JSONArray getArgument(){return (JSONArray) this.JsonData.get("arguments");}
+    private JSONArray getArgument(){return (JSONArray) this.JsonData.get("arguments");}
+
+    private String getName(){return (String) this.JsonData.get("name");}
+
 
 }
 
