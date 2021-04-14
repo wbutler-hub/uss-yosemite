@@ -2,8 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Command {
+    public static boolean back;
+    public static boolean forward;
     private final String name;
     private String argument;
+
 
     public abstract boolean execute(Robot target);
 
@@ -31,8 +34,10 @@ public abstract class Command {
         String[] args = instruction.toLowerCase().trim().split(" ");
         switch (args[0]){
             case "forward":
+                forward = true;
                 return new ForwardCommand(args[1]);
             case "back":
+                back = true;
                 return new BackCommand(args[1]);
             case "turn":
                 if (args[1].equals("right")) {
@@ -42,6 +47,7 @@ public abstract class Command {
                     return new LeftCommand();
                 }
             case "repair":
+                System.out.println(new RepairCommand());
                 return new RepairCommand();
 
             default:

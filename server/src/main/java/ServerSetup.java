@@ -46,7 +46,9 @@ public class ServerSetup implements Runnable{
                     System.out.println(robot.getShield());
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
+                    response.setData();
                     response.setStatus();
+                    response.setResult();
                     response.setResponse();
                     response.setMovement(jsonString);
                     System.out.println(response.getStatus());

@@ -131,6 +131,7 @@ public abstract class Robot {
             {
                 Long millisecs = this.repairSpeed * 1000L;
                 Thread.sleep(millisecs);
+                System.out.println();
             }
             catch(InterruptedException ex)
             {
