@@ -9,8 +9,8 @@ public class WorldTest {
     @Test
     public void testConfig() throws IOException {
         World world = new World();
-        assertEquals(200, world.getWidth());
-        assertEquals(200, world.getHeight());
+        assertEquals(100, world.getWidth());
+        assertEquals(100, world.getHeight());
         assertEquals(20, world.getVisibility());
         assertEquals(3, world.getReloadSpeed());
         assertEquals(5, world.getRepairSpeed());

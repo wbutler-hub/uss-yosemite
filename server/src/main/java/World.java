@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
 
@@ -14,12 +15,17 @@ public class World {
     private int reloadSpeed; // Reload speed in seconds
     private int repairSpeed; // Repair speed in seconds
     private int mineSpeed;   // Speed of which a mine is placed in seconds
+
     private ArrayList<Obstacle> obstacleList;
     private ArrayList<Pit> pitList;
+    private ArrayList<Mine> mineList;
+
+    private HashMap<String, Robot> robots = new HashMap<String, Robot>();
 
     public World() throws  IOException {
         obstacleList = new ArrayList<>();
         pitList = new ArrayList<>();
+        mineList = new ArrayList<>();
         setConfig();
         generateObstructions();
     }
@@ -33,8 +39,8 @@ public class World {
         } else {
             throw new FileNotFoundException("config.properties not found.");
         }
-        this.width = Integer.parseInt(prop.getProperty("width"));
-        this.height = Integer.parseInt(prop.getProperty("height"));
+        this.width = Integer.parseInt(prop.getProperty("width")) / 2;
+        this.height = Integer.parseInt(prop.getProperty("height")) / 2;
         this.visibility = Integer.parseInt(prop.getProperty("visibility"));
         this.reloadSpeed = Integer.parseInt(prop.getProperty("reloadSpeed"));
         this.repairSpeed = Integer.parseInt(prop.getProperty("repairSpeed"));
@@ -65,9 +71,17 @@ public class World {
 
     }
 
+    public void addMine(Mine mine) {
+        mineList.add(mine);
+    }
+
     public void setObstructionsEmpty() {
         this.obstacleList = new ArrayList<>();
         this.pitList = new ArrayList<>();
+    }
+
+    public void removeMine(Mine mine) {
+        this.mineList.remove(mine);
     }
 
     public int getHeight() {
@@ -100,4 +114,15 @@ public class World {
         return pitList;
     }
 
+    public ArrayList<Mine> getMineList() {
+        return mineList;
+    }
+
+    public void addRobotPair(String name, Robot robot) {
+        this.robots.put(name,robot);
+    }
+
+    public HashMap<String, Robot> getRobots() {
+        return robots;
+    }
 }

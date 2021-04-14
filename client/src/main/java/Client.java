@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Client {
@@ -10,6 +13,8 @@ public class Client {
     private static final int SERVER_PORT= 5000;
     private static Scanner scanner = new Scanner(System.in);
     private static String name;
+    private static ArrayList<String> types = new ArrayList<String>
+            (List.of("standard","sniper"));
 
 
     public static void main(String args[]) throws ClassNotFoundException{
@@ -35,6 +40,22 @@ public class Client {
                 }
             }
 
+            System.out.println("Robot Classes Available: \n" +
+                    "Standard \n" +
+                    "Sniper");
+            while (true) {
+                String type = getInput("Pick your robot class:");
+                type = type.toLowerCase().trim();
+                if (!types.contains(type)) {
+                    System.out.println("Invalid Robot Class!");
+                    continue;
+                }
+                else {
+                    out.println(launchRequest(type).getRequest());
+                    break;
+                }
+            }
+
             Request request = null;
             boolean shouldContinue = true;
             do {
@@ -48,7 +69,6 @@ public class Client {
                 } catch (IllegalArgumentException e) {
                 }
 
-//                dumpResponse(response);
 
             } while (shouldContinue);
             System.out.println("Hello Kiddo!");
@@ -66,6 +86,20 @@ public class Client {
             input = scanner.nextLine();
         }
         return input;
+    }
+
+    private static LaunchRequest launchRequest(String type) {
+        LaunchRequest launch = new LaunchRequest(name,"standard",
+                3,3);
+        if (type.equals("sniper")) {
+            launch = new LaunchRequest(name,"sniper",
+                    1,1);
+        }
+        else if (type.equals("standard")) {
+            launch = new LaunchRequest(name,"standard",
+                    3,3);
+        }
+        return launch;
     }
 
 

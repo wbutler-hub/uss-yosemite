@@ -49,6 +49,8 @@ public abstract class Command {
             case "repair":
                 System.out.println(new RepairCommand());
                 return new RepairCommand();
+            case "mine":
+                return new MineCommand();
 
             default:
                 throw new IllegalArgumentException("Unsupported command: " + instruction);
