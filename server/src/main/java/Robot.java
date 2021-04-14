@@ -143,20 +143,9 @@ public abstract class Robot {
             alive = false;
         }
         if (option.equals("repair")) {
-<<<<<<< HEAD
-            try
-            {
-                Long millisecs = this.repairSpeed * 1000L;
-                Thread.sleep(millisecs);
-                System.out.println();
-            }
-            catch(InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
-=======
+
             sleep(this.repairSpeed);
->>>>>>> main
+
             shield = maxShield;
         }
 
