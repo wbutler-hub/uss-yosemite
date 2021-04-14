@@ -20,6 +20,7 @@ public abstract class Robot {
     private int maxShield;
     private boolean alive;
     private final int repairSpeed;
+    private final int mineSpeed;
     private final Random random = new Random();
 
     private int width;
@@ -54,6 +55,7 @@ public abstract class Robot {
         this.height = world.getHeight();
         this.width = world.getWidth();
         this.repairSpeed = world.getRepairSpeed();
+        this.mineSpeed = world.getMineSpeed();
         TOP_LEFT = new Position((-this.width),this.height);
         BOTTOM_RIGHT =new Position(this.width,(-this.height));
         START = new Position(random.nextInt(this.width + this.width) - this.width,
@@ -70,6 +72,7 @@ public abstract class Robot {
         this.height = world.getHeight();
         this.width = world.getWidth();
         this.repairSpeed = world.getRepairSpeed();
+        this.mineSpeed = world.getMineSpeed();
         TOP_LEFT = new Position((-this.width),this.height);
         BOTTOM_RIGHT =new Position(this.width,(-this.height));
         START = new Position(random.nextInt(this.width + this.width) - this.width,
@@ -96,7 +99,6 @@ public abstract class Robot {
         }
 
         Position newPosition = new Position(newX, newY);
-        System.out.println(world.getRobots());
 
         for (Obstacle obstacle: world.getObstacleList()) {
             if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
@@ -116,6 +118,7 @@ public abstract class Robot {
             if (mine.blocksPosition(newPosition) || mine.blocksPath(this.position, newPosition)) {
                 this.position = new Position(mine.getBottomLeftPosition().getX(),mine.getBottomLeftPosition().getX());
                 this.updateShield("mine");
+                this.world.removeMine(mine);
                 return true;
             }
         }
@@ -140,15 +143,7 @@ public abstract class Robot {
             alive = false;
         }
         if (option.equals("repair")) {
-            try
-            {
-                Long millisecs = this.repairSpeed * 1000L;
-                Thread.sleep(millisecs);
-            }
-            catch(InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
+            sleep(this.repairSpeed);
             shield = maxShield;
         }
 
@@ -157,12 +152,20 @@ public abstract class Robot {
     public void setMine() {
         int originalShield = this.shield;
         this.shield = 0;
+        sleep(this.mineSpeed);
         Position position1 = new Position(this.position.getX() + 4,
                 this.position.getY()-4);
         Mine mine = new Mine(this.position,position1);
         world.addMine(mine);
         this.shield = originalShield;
-        this.updatePosition(1);
+        if(this.currentDirection.equals(Direction.NORTH) ||
+        this.currentDirection.equals(Direction.SOUTH)) {
+            this.position = new Position(position.getX(), position.getY()+1);
+        }
+        else {
+            this.position = new Position(position.getX()-1, position.getY());
+        }
+
     }
 
     public void updateShots(String option) {
@@ -214,6 +217,7 @@ public abstract class Robot {
             case "sniper":
                 return new SniperRobot(name);
             case "robot":
+            case "standard":
                 return new StandardRobot(name);
 
 
@@ -240,6 +244,18 @@ public abstract class Robot {
 
     public int getShield() {
         return shield;
+    }
+
+    private void sleep(int seconds) {
+        try
+        {
+            Long millisecs = seconds * 1000L;
+            Thread.sleep(millisecs);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
     }
 }
 

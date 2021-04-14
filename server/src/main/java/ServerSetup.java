@@ -52,6 +52,7 @@ public class ServerSetup implements Runnable{
                     boolean shouldContinue = robot.handleCommand(command);
                     System.out.println(robot.getPosition().getX());
                     System.out.println(robot.getPosition().getY());
+                    System.out.println(robot.getShield());
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
 //                    response.setStatus();
