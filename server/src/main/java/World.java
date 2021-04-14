@@ -80,6 +80,10 @@ public class World {
         this.pitList = new ArrayList<>();
     }
 
+    public void removeMine(Mine mine) {
+        this.mineList.remove(mine);
+    }
+
     public int getHeight() {
         return height;
     }

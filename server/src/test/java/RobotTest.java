@@ -82,4 +82,20 @@ public class RobotTest {
         assertEquals(expectedShield,robot.getShield());
         assertEquals("REPAIR", robot.getStatus());
     }
+
+    @Test
+    void mine() throws IOException {
+        Robot robot;
+        World world = new World();
+        world.setObstructionsEmpty();
+        robot = Robot.create("Dummy","test", world );
+        MineCommand command = new MineCommand();
+        assertTrue(robot.handleCommand(command));
+        assertEquals(world.getMineList().size(),1);
+        robot.updatePosition(10);
+        MineCommand command1 = new MineCommand();
+        assertTrue(robot.handleCommand(command));
+        assertEquals(world.getMineList().size(),2);
+        assertEquals("SETMINE", robot.getStatus());
+    }
 }

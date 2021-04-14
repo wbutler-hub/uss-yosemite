@@ -4,6 +4,7 @@ public class MineCommand extends Command{
     @Override
     public boolean execute(Robot target) {
         target.setMine();
-        return false;
+        target.setStatus("SETMINE");
+        return true;
     }
 }
