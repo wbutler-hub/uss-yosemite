@@ -1,5 +1,3 @@
-import java.util.List;
-import java.time.Duration;
 import java.util.Random;
 
 
@@ -120,6 +118,15 @@ public abstract class Robot {
                 this.updateShield("mine");
                 this.world.removeMine(mine);
                 return true;
+            }
+        }
+
+        for (Robot robot: world.getRobotList()) {
+            if (!robot.equals(this)) {
+                if (robot.blocksPosition(newPosition) || robot.blocksPath(this.position, newPosition)) {
+                    System.out.println("IM HErre");
+                    return false;
+                }
             }
         }
 
@@ -256,6 +263,38 @@ public abstract class Robot {
         {
             Thread.currentThread().interrupt();
         }
+    }
+
+    public boolean blocksPosition(Position position) {
+        Boolean checkY = this.position.getY() == position.getY();
+        Boolean checkX = this.position.getX() == position.getX();
+
+        if (checkX && checkY) {
+            return true;
+        }
+        return  false;
+    }
+
+
+    public boolean blocksPath(Position a, Position b) {
+        if (a.getX() == b.getX() && (this.position.getX() <= a.getX() && a.getX() <= this.position.getX())) {
+            if (b.getY() < this.position.getY()) {
+                return a.getY() >= this.position.getY();
+            }
+            else if (b.getY() > (this.position.getY())) {
+                return a.getY() <= this.position.getY();
+            }
+        }
+        else if (a.getY() == b.getY() && (this.position.getY() <= a.getY() && a.getY() <= this.position.getY())) {
+            if (b.getX() < this.position.getX()) {
+                return a.getX() >= this.position.getX();
+            }
+            else if (b.getX() > (this.position.getX())) {
+                return a.getX() <= this.position.getX();
+            }
+        }
+
+        return false;
     }
 }
 

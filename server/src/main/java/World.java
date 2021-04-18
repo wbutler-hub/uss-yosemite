@@ -21,11 +21,13 @@ public class World {
     private ArrayList<Mine> mineList;
 
     private HashMap<String, Robot> robots = new HashMap<String, Robot>();
+    private ArrayList<Robot> robotList;
 
     public World() throws  IOException {
         obstacleList = new ArrayList<>();
         pitList = new ArrayList<>();
         mineList = new ArrayList<>();
+        robotList = new ArrayList<>();
         setConfig();
         generateObstructions();
     }
@@ -120,6 +122,11 @@ public class World {
 
     public void addRobotPair(String name, Robot robot) {
         this.robots.put(name,robot);
+        this.robotList.add(robot);
+    }
+
+    public ArrayList<Robot> getRobotList() {
+        return robotList;
     }
 
     public HashMap<String, Robot> getRobots() {
