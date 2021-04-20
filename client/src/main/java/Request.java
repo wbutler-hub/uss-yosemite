@@ -36,6 +36,8 @@ public abstract class Request {
                 return new LookRequest(name);
             case "mine":
                 return new MineRequest(name);
+            case "fire":
+                return new FireRequest(name);
             case "state":
                 return new StateRequest(name);
 
