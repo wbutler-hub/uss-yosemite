@@ -193,6 +193,7 @@ public abstract class Robot {
             }
         }
         if(option.equals("reload")) {
+            sleep(this.reloadSpeed);
             this.shots = maxNumberOfShots;
         }
 
