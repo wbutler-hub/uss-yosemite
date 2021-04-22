@@ -46,6 +46,8 @@ public abstract class Command {
                 return new MineCommand();
             case "fire":
                 return new FireCommand();
+            case "look":
+                return new LookCommand();
 
             default:
                 throw new IllegalArgumentException("Unsupported command: " + instruction);
