@@ -48,6 +48,7 @@ public class Response {
     public void setData(){
         this.data = new JSONObject();
 
+        System.out.println(this.message);
         this.data.put("message",this.message);
     }
     public void setStatus() {
@@ -75,6 +76,7 @@ public class Response {
             this.result.put("data",this.data);
             this.resp.put(this.result);
             this.resp.put(this.state);
+            System.out.println(this.message);
             System.out.println("this is forward "+ this.resp);
         } else if( Mine.mine == false && Back.back == true && Forward.forward == false
                 && Repair.repair == false){
@@ -115,6 +117,7 @@ public class Response {
         this.response.put("result",this.resp);
 
 
+        System.out.println(69);
         System.out.println(this.resp);
 
     }

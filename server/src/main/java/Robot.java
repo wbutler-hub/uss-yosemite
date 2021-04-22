@@ -1,5 +1,3 @@
-import java.util.List;
-import java.time.Duration;
 import java.util.Random;
 
 
@@ -100,8 +98,6 @@ public abstract class Robot {
         }
 
         Position newPosition = new Position(newX, newY);
-        System.out.println(this.position.getX());
-        System.out.println(this.position.getY());
         for (Obstacle obstacle: world.getObstacleList()) {
             if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
                // obs = true;
@@ -147,7 +143,6 @@ public abstract class Robot {
         }
         if (option.equals("repair")) {
 
-<<<<<<< HEAD
             try
             {
                 Long millisecs = this.repairSpeed * 1000L;
@@ -159,8 +154,7 @@ public abstract class Robot {
                 Thread.currentThread().interrupt();
             }
 
-=======
->>>>>>> 83e96c385cd8fb6da6551393a8dc62c5b948f91d
+
             sleep(this.repairSpeed);
 
             shield = maxShield;
