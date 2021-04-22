@@ -1,11 +1,11 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ServerSetup implements Runnable{
     public static final int PORT = 5000;
@@ -53,6 +53,8 @@ public class ServerSetup implements Runnable{
                     System.out.println(robot.getPosition().getX());
                     System.out.println(robot.getPosition().getY());
                     System.out.println(robot.getShield());
+                    System.out.println(robot.getObjects());
+                    System.out.println(robot.getStatus());
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
 //                    response.setStatus();
