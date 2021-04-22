@@ -147,6 +147,7 @@ public abstract class Robot {
         }
         if (option.equals("repair")) {
 
+<<<<<<< HEAD
             try
             {
                 Long millisecs = this.repairSpeed * 1000L;
@@ -158,6 +159,8 @@ public abstract class Robot {
                 Thread.currentThread().interrupt();
             }
 
+=======
+>>>>>>> 83e96c385cd8fb6da6551393a8dc62c5b948f91d
             sleep(this.repairSpeed);
 
             shield = maxShield;
