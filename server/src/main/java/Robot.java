@@ -13,6 +13,7 @@ public abstract class Robot {
     private String status;
     private World world;
     private final String name;
+    public static boolean obs;
 
     private int shield;
     private int shots;
@@ -99,9 +100,11 @@ public abstract class Robot {
         }
 
         Position newPosition = new Position(newX, newY);
-
+        System.out.println(this.position.getX());
+        System.out.println(this.position.getY());
         for (Obstacle obstacle: world.getObstacleList()) {
             if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
+               // obs = true;
                 return false;
             }
         }
@@ -143,7 +146,7 @@ public abstract class Robot {
             alive = false;
         }
         if (option.equals("repair")) {
-<<<<<<< HEAD
+
             try
             {
                 Long millisecs = this.repairSpeed * 1000L;
@@ -154,9 +157,9 @@ public abstract class Robot {
             {
                 Thread.currentThread().interrupt();
             }
-=======
+
             sleep(this.repairSpeed);
->>>>>>> main
+
             shield = maxShield;
         }
 

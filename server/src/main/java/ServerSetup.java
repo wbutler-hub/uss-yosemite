@@ -29,18 +29,21 @@ public class ServerSetup implements Runnable{
         try {
             Robot robot = new StandardRobot("Init");
             Command command;
-            response = new Response(robot);
+
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
             boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
             while((messageFromClient = in.readLine()) != null) {
+
                 requestUsed = messageFromClient.contains("{");
                 if (requestUsed) {
                     JsonData = new JSONObject(messageFromClient);
                     jsonString = getCommand();
+                    System.out.println("magiccccc");/////////////////////////////
                     if (jsonString.equals("launch")) {
                         robot = Robot.create(getName(),getArgument().get(0).toString());
                         robot.addRobotPair();
+                        response = new Response(robot);
                         continue;
                     }
                     jsonString = jsonString.concat(" ");
@@ -50,21 +53,25 @@ public class ServerSetup implements Runnable{
                     jsonString = jsonString.trim();
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
+
+                    response.setStatus();
+                    response.setData();
+
+                    response.setResult();
+
+                    response.setResponse();
+
+                    response.setMovement(jsonString);
+
+                    System.out.println(response.getStatus());
                     System.out.println(robot.getPosition().getX());
                     System.out.println(robot.getPosition().getY());
                     System.out.println(robot.getShield());
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
-<<<<<<< HEAD
-                    response.setData();
-                    response.setStatus();
-                    response.setResult();
-                    response.setResponse();
-                    response.setMovement(jsonString);
-                    System.out.println(response.getStatus());
-=======
 
->>>>>>> main
+
+
                 }
                 else {
                     if(Server.userNames.contains(messageFromClient)) {
