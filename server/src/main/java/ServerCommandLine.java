@@ -62,6 +62,7 @@ public class ServerCommandLine implements Runnable {
                 robotStates.remove(name);
                 robotThreadIndexes.remove(name);
                 Server.userNames.remove(name);
+                System.out.println("Purged " + name + ".");
             }
         }
     }
