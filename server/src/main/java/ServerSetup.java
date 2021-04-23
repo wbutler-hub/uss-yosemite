@@ -1,10 +1,7 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.net.Socket;
 
 public class ServerSetup implements Runnable{
@@ -15,6 +12,7 @@ public class ServerSetup implements Runnable{
     private JSONObject JsonData;
     private Response response;
 
+
     public ServerSetup(Socket socket) throws IOException {
         clientMachine = socket.getInetAddress().getHostName();
         System.out.println("Connection from " + clientMachine);
@@ -23,6 +21,8 @@ public class ServerSetup implements Runnable{
         in = new BufferedReader(new InputStreamReader(
                 socket.getInputStream()));
         System.out.println("Waiting for client...");
+
+
     }
 
     public void run() {
@@ -55,18 +55,14 @@ public class ServerSetup implements Runnable{
                     System.out.println(robot.getPosition().getX());
                     System.out.println(robot.getPosition().getY());
                     response = new Response(robot);
-                    response.setData();
-
-                    response.setStatus();
-                    response.setData();
-
-                    response.setResult();
 
 
-                    response.setResponse();
-                    response.setMovement(jsonString);
+                    response.setResult(jsonString);
 
-                    System.out.println(response.getStatus());
+
+
+
+                    System.out.println(response.setResult(jsonString));
 
 
 

@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+
 public class Client {
     private static final String SERVER_HOST= "localhost";
     private static final int SERVER_PORT= 5000;
     private static Scanner scanner = new Scanner(System.in);
     private static String name;
+
     private static ArrayList<String> types = new ArrayList<String>
             (List.of("standard","sniper"));
 
@@ -60,6 +62,7 @@ public class Client {
             boolean shouldContinue = true;
             do {
                 String instruction = getInput(name + "> What must I do next?").strip().toLowerCase();
+                System.out.println();
                 if (instruction.equals("off")) {
                     shouldContinue = false;
                 }
