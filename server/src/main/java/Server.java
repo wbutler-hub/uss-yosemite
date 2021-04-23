@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Server {
-    public final static ArrayList<String> userNames = new ArrayList<>();
+    public static ArrayList<String> userNames = new ArrayList<>();
 //    HashMap<String, Robot> robots = new HashMap<String, Robot>();
+    public static ArrayList<Response> userResponses = new ArrayList<>();
+
 
     private static World world;
 
@@ -18,6 +20,9 @@ public class Server {
     public static void main(String[] args) throws IOException {
         world = new World();
 
+        Runnable cliRun = new ServerCommandLine();
+        Thread cliThread = new Thread(cliRun);
+        cliThread.start();
 
         ServerSocket serverSocket = new ServerSocket( ServerSetup.PORT);
         System.out.println("Server running & waiting for client connections.");
@@ -28,6 +33,10 @@ public class Server {
 
                 Runnable r = new ServerSetup(socket);
                 Thread task = new Thread(r);
+
+                ServerCommandLine.serverSetups.add(r);
+                ServerCommandLine.serverThreads.add(task);
+
                 task.start();
             } catch(IOException ex) {
                 ex.printStackTrace();
@@ -39,4 +48,7 @@ public class Server {
         return world;
     }
 
+    public static void endServer() {
+        System.exit(0);
+    }
 }
