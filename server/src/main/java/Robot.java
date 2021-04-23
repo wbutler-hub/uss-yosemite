@@ -4,7 +4,6 @@ import java.util.Random;
 
 
 public abstract class Robot {
-    private int index;
 
     public final Position CENTRE = new Position(0,0);
 
@@ -37,8 +36,6 @@ public abstract class Robot {
     private final Position TOP_LEFT;
     private final Position BOTTOM_RIGHT;
 
-//    private List<Obstacle> obstacleList;
-
     public void setMaxShield(int maxShield) {this.maxShield = maxShield;}
 
     public void setMaxNumberOfShots(int maxNumberOfShots) {this.maxNumberOfShots = maxNumberOfShots;}
@@ -50,6 +47,8 @@ public abstract class Robot {
     public void setShots(int shots) {
         this.shots = shots;
     }
+
+    public String getName() { return this.name;}
 
     public Robot(String name) {
 
@@ -89,7 +88,6 @@ public abstract class Robot {
                 random.nextInt(this.height + this.height) - this.height);
         this.position = this.START;
     }
-
 
     public boolean updatePosition(int nrSteps) {
         int newX = this.position.getX();
@@ -459,7 +457,7 @@ public abstract class Robot {
                     if (!robot.equals(this)) {
                         if (robot.blocksPosition(newPosition)) {
                             robot.updateShield("shot");
-                            Server.userStatuses.set(robot.getIndex(), ServerCommandLine.getState(robot));
+                            ServerCommandLine.robotStates.put(robot.getName(), ServerCommandLine.getState(robot));
                             return true;
                         }
                     }
@@ -479,15 +477,5 @@ public abstract class Robot {
     }
 
     public Boolean getEmptyGun() { return emptyGun; }
-
-
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
 }
 

@@ -1,10 +1,12 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class ServerCommandLine implements Runnable {
     private final static Scanner scanner = new Scanner(System.in);
-    public static ArrayList<Runnable> serverSetups = new ArrayList<>();
     public static ArrayList<Thread> serverThreads = new ArrayList<>();
+    public static HashMap<String, String> robotStates = new HashMap<>();
+    public static HashMap<String, Integer> robotThreadIndexes = new HashMap<>();
 
     public ServerCommandLine() {
 
@@ -15,7 +17,6 @@ public class ServerCommandLine implements Runnable {
         String command;
         while(true) {
             command = getInput();
-            //System.out.println("Received command: " + command);
             if (command.equalsIgnoreCase("robots")) {
                 robotsCommand();
             }
@@ -41,7 +42,7 @@ public class ServerCommandLine implements Runnable {
         for(int i = 0; i < Server.userNames.size(); i++){
             String botName = Server.userNames.get(i);
             if (botName != null) {
-                System.out.println(botName + ":\n" + Server.userStatuses.get(i) + "\n");
+                System.out.println(botName + ":\n" + robotStates.get(botName) + "\n");
             }
         }
     }
@@ -56,9 +57,11 @@ public class ServerCommandLine implements Runnable {
     public void purgeCommand(String name) {
         for (int i = 0; i < Server.userNames.size(); i++) {
             String botName = Server.userNames.get(i);
-            if (botName != null && botName.equalsIgnoreCase(name)) {
-                Server.userNames.set(i, null);
-                serverThreads.get(i).interrupt();
+            if (botName.equalsIgnoreCase(name)) {
+                serverThreads.get(robotThreadIndexes.get(name)).interrupt();
+                robotStates.remove(name);
+                robotThreadIndexes.remove(name);
+                Server.userNames.remove(name);
             }
         }
     }

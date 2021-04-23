@@ -24,7 +24,7 @@ public class ServerSetup implements Runnable{
         in = new BufferedReader(new InputStreamReader(
                 socket.getInputStream()));
         System.out.println("Waiting for client...");
-        index = Server.userNames.size();
+        index = ServerCommandLine.serverThreads.size();
     }
 
     public void run() {
@@ -32,8 +32,6 @@ public class ServerSetup implements Runnable{
             Robot robot = new StandardRobot("Init");
             Command command;
             response = new Response(robot);
-            robot.setIndex(index);
-            Server.userStatuses.add(ServerCommandLine.getState(robot));
 
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
@@ -56,18 +54,11 @@ public class ServerSetup implements Runnable{
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
 
-                    Server.userStatuses.set(index, ServerCommandLine.getState(robot));
-                    System.out.println(Server.userNames.get(index) + ": " + robot.getStatus());
+                    ServerCommandLine.robotStates.put(robot.getName(), ServerCommandLine.getState(robot));
+                    System.out.println(robot.getName() + ": " + robot.getStatus());
 
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
-
-//                    response.setStatus();
-//                    response.setResponse();
-//                    response.setMovement(jsonString);
-//                    System.out.println(response.getStatus());
-
-
                 }
                 else {
                     if(Server.userNames.contains(messageFromClient)) {
@@ -76,6 +67,8 @@ public class ServerSetup implements Runnable{
                     else {
                         Server.userNames.add(messageFromClient);
                         out.println("Username accepted!");
+                        ServerCommandLine.robotStates.put(messageFromClient, "");
+                        ServerCommandLine.robotThreadIndexes.put(messageFromClient, index);
                     }
                 }
             }
