@@ -50,11 +50,6 @@ public class ServerSetup implements Runnable{
                     jsonString = jsonString.trim();
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
-                    System.out.println(robot.getPosition().getX());
-                    System.out.println(robot.getPosition().getY());
-                    System.out.println(robot.getShield());
-                    System.out.println(robot.getObjects());
-                    System.out.println(robot.getStatus());
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
 //                    response.setStatus();
