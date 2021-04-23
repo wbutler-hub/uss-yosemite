@@ -14,6 +14,7 @@ public class FireCommand extends Command{
                 target.setStatus("Out Of Ammo");
             }
         }
+        target.updateShots("shoot");
         return true;
     }
 }
