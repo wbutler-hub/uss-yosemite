@@ -15,7 +15,7 @@ public class ServerCommandLine implements Runnable {
         String command;
         while(true) {
             command = getInput();
-            System.out.println("Received command: " + command);
+            //System.out.println("Received command: " + command);
             if (command.equalsIgnoreCase("robots")) {
                 robotsCommand();
             }

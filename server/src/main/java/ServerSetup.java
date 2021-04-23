@@ -15,7 +15,6 @@ public class ServerSetup implements Runnable{
     private JSONObject JsonData;
     private Response response;
     private final int index;
-    private Robot robot;
 
     public ServerSetup(Socket socket) throws IOException {
         clientMachine = socket.getInetAddress().getHostName();
@@ -30,10 +29,11 @@ public class ServerSetup implements Runnable{
 
     public void run() {
         try {
-            robot = new StandardRobot("Init");
+            Robot robot = new StandardRobot("Init");
             Command command;
             response = new Response(robot);
-            Server.userStatuses.add(getRobotState());
+            robot.setIndex(index);
+            Server.userStatuses.add(Robot.getState(robot));
 
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
@@ -56,7 +56,7 @@ public class ServerSetup implements Runnable{
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
 
-                    Server.userStatuses.set(index, getRobotState());
+                    Server.userStatuses.set(index, Robot.getState(robot));
                     System.out.println(Server.userNames.get(index) + ": " + robot.getStatus());
 //                    System.out.println(robot.getPosition().getX());
 //                    System.out.println(robot.getPosition().getY());
@@ -101,14 +101,6 @@ public class ServerSetup implements Runnable{
 
     private String getName(){return (String) this.JsonData.get("name");}
 
-    private String getRobotState() {
-        return "state: {\n" +
-                "position: [" + robot.getPosition().getX() + "," + robot.getPosition().getY() + "]\n" +
-                "direction: " + robot.getCurrentDirection() + "\n" +
-                "shields: " + robot.getShield() + "\n" +
-                "shots: " + robot.getShots() + "\n" +
-                "status: " + robot.getStatus() +
-                "}";
-    }
+
 }
 
