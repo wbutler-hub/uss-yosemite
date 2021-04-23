@@ -1,3 +1,7 @@
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import java.util.Random;
 
 
@@ -18,12 +22,17 @@ public abstract class Robot {
     private int maxNumberOfShots;
     private int maxShield;
     private boolean alive;
+    private boolean emptyGun;
     private final int repairSpeed;
     private final int mineSpeed;
+    private final int reloadSpeed;
     private final Random random = new Random();
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
+    private final int visibility;
+
+    private HashMap<Object,ArrayList<Object>> objects = new HashMap<>();
 
 
     public final Position START;
@@ -51,10 +60,13 @@ public abstract class Robot {
         this.world = Server.getWorld();
         this.currentDirection = Direction.NORTH;
         this.alive = true;
+        this.emptyGun = false;
         this.height = world.getHeight();
         this.width = world.getWidth();
         this.repairSpeed = world.getRepairSpeed();
+        this.visibility = world.getVisibility();
         this.mineSpeed = world.getMineSpeed();
+        this.reloadSpeed = world.getReloadSpeed();
         TOP_LEFT = new Position((-this.width),this.height);
         BOTTOM_RIGHT =new Position(this.width,(-this.height));
         START = new Position(random.nextInt(this.width + this.width) - this.width,
@@ -71,7 +83,9 @@ public abstract class Robot {
         this.height = world.getHeight();
         this.width = world.getWidth();
         this.repairSpeed = world.getRepairSpeed();
+        this.visibility = world.getVisibility();
         this.mineSpeed = world.getMineSpeed();
+        this.reloadSpeed = world.getReloadSpeed();
         TOP_LEFT = new Position((-this.width),this.height);
         BOTTOM_RIGHT =new Position(this.width,(-this.height));
         START = new Position(random.nextInt(this.width + this.width) - this.width,
@@ -119,6 +133,14 @@ public abstract class Robot {
                 this.updateShield("mine");
                 this.world.removeMine(mine);
                 return true;
+            }
+        }
+
+        for (Robot robot: world.getRobotList()) {
+            if (!robot.equals(this)) {
+                if (robot.blocksPosition(newPosition) || robot.blocksPath(this.position, newPosition)) {
+                    return false;
+                }
             }
         }
 
@@ -183,13 +205,20 @@ public abstract class Robot {
 
     public void updateShots(String option) {
 
-        if(option.equals("shoot")) {
-            if(shots > 0) {
-                this.shots -= 1;
+        if (!emptyGun) {
+            if (option.equals("shoot")) {
+                if (shots > 0) {
+                    this.shots -= 1;
+                    if (shots == 0) {
+                        emptyGun = true;
+                    }
+                }
             }
         }
-        else if(option.equals("reload")) {
+        if(option.equals("reload")) {
+            sleep(this.reloadSpeed);
             this.shots = maxNumberOfShots;
+            this.emptyGun = false;
         }
 
     }
@@ -270,5 +299,202 @@ public abstract class Robot {
             Thread.currentThread().interrupt();
         }
     }
+
+    public boolean blocksPosition(Position position) {
+        Boolean checkY = this.position.getY() == position.getY();
+        Boolean checkX = this.position.getX() == position.getX();
+
+        if (checkX && checkY) {
+            return true;
+        }
+        return  false;
+    }
+
+
+    public boolean blocksPath(Position a, Position b) {
+        if (a.getX() == b.getX() && (this.position.getX() <= a.getX() && a.getX() <= this.position.getX())) {
+            if (b.getY() < this.position.getY()) {
+                return a.getY() >= this.position.getY();
+            }
+            else if (b.getY() > (this.position.getY())) {
+                return a.getY() <= this.position.getY();
+            }
+        }
+        else if (a.getY() == b.getY() && (this.position.getY() <= a.getY() && a.getY() <= this.position.getY())) {
+            if (b.getX() < this.position.getX()) {
+                return a.getX() >= this.position.getX();
+            }
+            else if (b.getX() > (this.position.getX())) {
+                return a.getX() <= this.position.getX();
+            }
+        }
+
+        return false;
+    }
+
+    public HashMap<Object, ArrayList<Object>> getObjects() { return this.objects; }
+
+    public void lookAround() {
+        int newX;
+        int newY;
+        ArrayList<Object> objectData = new ArrayList<>();
+        this.objects = new HashMap<>();
+        Direction direction = Direction.NORTH;
+        int mineVisibility = (int) Math.floor(this.visibility / 4);
+
+
+        for (int degree = 0; degree <= 270 ; degree+=90) {
+            for (int i = 0; i <= this.visibility; i++) {
+                newX = this.position.getX();
+                newY = this.position.getY();
+
+                if (degree == 0) {
+                    newY = newY + i;
+                    direction = Direction.NORTH;
+                } else if (degree == 90) {
+                    newX = newX + i;
+                    direction = Direction.EAST;
+                } else if (degree == 180) {
+                    newY = newY - i;
+                    direction = Direction.SOUTH;
+                } else if (degree == 270) {
+                    newX = newX - i;
+                    direction = Direction.WEST;
+                }
+
+                Position newPosition = new Position(newX, newY);
+
+                for (Obstacle obstacle : world.getObstacleList()) {
+                    if (obstacle.blocksPosition(newPosition)) {
+                        objectData = new ArrayList<>();
+                        objectData.add(i);
+                        objectData.add(direction);
+                        if (!this.objects.containsKey(obstacle)) {
+                            this.objects.put(obstacle,objectData);
+                        }
+                    }
+                }
+
+                for (Pit pit: world.getPitList()) {
+                    if (pit.blocksPosition(newPosition) || pit.blocksPath(this.position, newPosition)) {
+                        this.alive = false;
+                        this.position = new Position(pit.getBottomLeftPosition().getX(),pit.getBottomLeftPosition().getX());
+                        objectData = new ArrayList<>();
+                        objectData.add(i);
+                        objectData.add(direction);
+                        if (!this.objects.containsKey(pit)) {
+                            this.objects.put(pit,objectData);
+                        }
+                    }
+                }
+
+                for (Robot robot : world.getRobotList()) {
+                    if (!robot.equals(this)) {
+                        if (robot.blocksPosition(newPosition)) {
+                            objectData = new ArrayList<>();
+                            objectData.add(i);
+                            objectData.add(direction);
+                            if (!this.objects.containsKey(robot)) {
+                                this.objects.put(robot,objectData);
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i <= mineVisibility; i++) {
+                newX = this.position.getX();
+                newY = this.position.getY();
+
+                if (degree == 0) {
+                    newY = newY + i;
+                    direction = Direction.NORTH;
+                } else if (degree == 90) {
+                    newX = newX + i;
+                    direction = Direction.EAST;
+                } else if (degree == 180) {
+                    newY = newY - i;
+                    direction = Direction.SOUTH;
+                } else if (degree == 270) {
+                    newX = newX - i;
+                    direction = Direction.WEST;
+                }
+
+                Position newPosition = new Position(newX, newY);
+
+                for (Mine mine: world.getMineList()) {
+                    if (mine.blocksPosition(newPosition)) {
+                        objectData = new ArrayList<>();
+                        objectData.add(i);
+                        objectData.add(direction);
+                        if (!objects.containsKey(mine)) {
+                            objects.put(mine,objectData);
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+
+    public boolean updateBullet() {
+        int newX = this.position.getX();
+        int newY = this.position.getY();
+
+        int distance = 0;
+
+        if (maxNumberOfShots == 5) {distance = 1;}
+        if (maxNumberOfShots == 4) {distance = 2;}
+        if (maxNumberOfShots == 3) {distance = 3;}
+        if (maxNumberOfShots == 2) {distance = 4;}
+        if (maxNumberOfShots == 1) {distance = 5;}
+
+        if (!emptyGun) {
+            for (int i = 0; i <= distance; i++) {
+
+                if (Direction.NORTH.equals(this.currentDirection)) {
+                    newY = newY + i;
+                } else if (Direction.SOUTH.equals(this.currentDirection)) {
+                    newY = newY - i;
+                } else if (Direction.WEST.equals(this.currentDirection)) {
+                    newX = newX - i;
+                } else if (Direction.EAST.equals(this.currentDirection)) {
+                    newX = newX + i;
+                }
+
+                Position newPosition = new Position(newX, newY);
+
+                for (Obstacle obstacle : world.getObstacleList()) {
+                    if (obstacle.blocksPosition(newPosition)) {
+                        return false;
+                    }
+                }
+
+
+
+                for (Robot robot : world.getRobotList()) {
+                    if (!robot.equals(this)) {
+                        if (robot.blocksPosition(newPosition)) {
+                            robot.updateShield("shot");
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public int getShots() {
+        return shots;
+    }
+
+    public Boolean getEmptyGun() { return emptyGun; }
 }
 

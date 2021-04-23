@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Command {
     public static boolean back;
     public static boolean forward;
@@ -62,12 +59,18 @@ public abstract class Command {
                 repair = true;
 
                 return new RepairCommand();
+            case "reload":
+                return new ReloadCommand();
             case "mine":
                 forward = false;
                 back = false;
                 repair = false;
                 mine = true;
                 return new MineCommand();
+            case "fire":
+                return new FireCommand();
+            case "look":
+                return new LookCommand();
 
             default:
                 throw new IllegalArgumentException("Unsupported command: " + instruction);

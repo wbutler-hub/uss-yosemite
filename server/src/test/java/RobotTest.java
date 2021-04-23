@@ -2,8 +2,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RobotTest {
 
@@ -13,7 +13,8 @@ public class RobotTest {
         World world = new World();
         world.setObstructionsEmpty();
         robot = Robot.create("Dummy","test", world );
-        Position expectedPosition = new Position(robot.getPosition().getX(), robot.getPosition().getY()+10);
+        robot.setPosition(new Position(0,0));
+        Position expectedPosition = new Position(0, 10);
         ForwardCommand command = new ForwardCommand("10");
         assertTrue(robot.handleCommand(command));
         assertEquals(expectedPosition.getX(), robot.getPosition().getX());
@@ -27,7 +28,8 @@ public class RobotTest {
         World world = new World();
         world.setObstructionsEmpty();
         robot = Robot.create("Dummy","test", world );
-        Position expectedPosition = new Position(robot.getPosition().getX(), robot.getPosition().getY()-10);
+        robot.setPosition(new Position(0,0));
+        Position expectedPosition = new Position(0, -10);
         BackCommand command = new BackCommand("10");
         assertTrue(robot.handleCommand(command));
         assertEquals(expectedPosition.getX(), robot.getPosition().getX());
@@ -41,7 +43,8 @@ public class RobotTest {
         World world = new World();
         world.setObstructionsEmpty();
         robot = Robot.create("Dummy","test", world );
-        Position expectedPosition = new Position(robot.getPosition().getX()-10, robot.getPosition().getY());
+        robot.setPosition(new Position(0,0));
+        Position expectedPosition = new Position(-10, 0);
         LeftCommand command = new LeftCommand();
         ForwardCommand command1 = new ForwardCommand("10");
         assertTrue(robot.handleCommand(command));
@@ -57,7 +60,8 @@ public class RobotTest {
         World world = new World();
         world.setObstructionsEmpty();
         robot = Robot.create("Dummy","test", world );
-        Position expectedPosition = new Position(robot.getPosition().getX()+10, robot.getPosition().getY());
+        robot.setPosition(new Position(0,0));
+        Position expectedPosition = new Position(10, 0);
         RightCommand command = new RightCommand();
         ForwardCommand command1 = new ForwardCommand("10");
         assertTrue(robot.handleCommand(command));
@@ -89,6 +93,7 @@ public class RobotTest {
         World world = new World();
         world.setObstructionsEmpty();
         robot = Robot.create("Dummy","test", world );
+        robot.setPosition(new Position(0,0));
         MineCommand command = new MineCommand();
         assertTrue(robot.handleCommand(command));
         assertEquals(world.getMineList().size(),1);
@@ -97,5 +102,39 @@ public class RobotTest {
         assertTrue(robot.handleCommand(command));
         assertEquals(world.getMineList().size(),2);
         assertEquals("SETMINE", robot.getStatus());
+    }
+
+    @Test
+    void reload() throws IOException {
+        Robot robot;
+        World world = new World();
+        world.setObstructionsEmpty();
+        robot = Robot.create("Dummy","test", world );
+        assertEquals(3,robot.getShots());
+        int expectedShots = 3;
+        robot.updateShots("shoot");
+        robot.updateShots("shoot");
+        assertEquals(1,robot.getShots());
+        ReloadCommand command = new ReloadCommand();
+        assertTrue(robot.handleCommand(command));
+        assertEquals(expectedShots,robot.getShots());
+        assertEquals("RELOAD", robot.getStatus());
+    }
+
+    @Test
+    void outOfAmmo() throws IOException {
+        Robot robot;
+        World world = new World();
+        world.setObstructionsEmpty();
+        robot = Robot.create("Dummy","test", world );
+        assertEquals(3,robot.getShots());
+        int expectedShots = 0;
+        robot.updateShots("shoot");
+        robot.updateShots("shoot");
+        robot.updateShots("shoot");
+        assertEquals(expectedShots,robot.getShots());
+        Command command = new FireCommand();
+        assertTrue(robot.handleCommand(command));
+        assertEquals("Out Of Ammo", robot.getStatus());
     }
 }

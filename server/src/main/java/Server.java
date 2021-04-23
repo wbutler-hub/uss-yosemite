@@ -1,17 +1,20 @@
+
 import java.io.*;
+
+import java.io.IOException;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Server {
     public final static ArrayList<String> userNames = new ArrayList<>();
-//    HashMap<String, Robot> robots = new HashMap<String, Robot>();
-
     private static World world;
 
 
+
     public static DataOutputStream Output;
+
     public static void main(String[] args) throws IOException {
         world = new World();
 

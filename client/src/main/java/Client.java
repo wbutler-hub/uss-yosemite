@@ -5,7 +5,6 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -27,7 +26,7 @@ public class Client {
                         socket.getInputStream()));
         )
         {
-//            Play.start();
+
             String messageFromServer;
             while (true) {
                 name = getInput("What do you want to name your robot?");
@@ -42,6 +41,7 @@ public class Client {
                 }
             }
 
+//            Display display = new Display();
             System.out.println("Robot Classes Available: \n" +
                     "Standard \n" +
                     "Sniper");
