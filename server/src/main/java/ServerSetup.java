@@ -58,10 +58,6 @@ public class ServerSetup implements Runnable{
 
                     Server.userStatuses.set(index, ServerCommandLine.getState(robot));
                     System.out.println(Server.userNames.get(index) + ": " + robot.getStatus());
-//                    System.out.println(robot.getPosition().getX());
-//                    System.out.println(robot.getPosition().getY());
-//                    System.out.println(robot.getShield());
-//                    System.out.println(robot.getObjects());
 
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);

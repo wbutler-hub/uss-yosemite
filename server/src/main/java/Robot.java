@@ -361,8 +361,6 @@ public abstract class Robot {
 
                 for (Pit pit: world.getPitList()) {
                     if (pit.blocksPosition(newPosition) || pit.blocksPath(this.position, newPosition)) {
-                        this.alive = false;
-                        this.position = new Position(pit.getBottomLeftPosition().getX(),pit.getBottomLeftPosition().getX());
                         objectData = new ArrayList<>();
                         objectData.add(i);
                         objectData.add(direction);
