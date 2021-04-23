@@ -201,6 +201,7 @@ public abstract class Robot {
         if(option.equals("reload")) {
             sleep(this.reloadSpeed);
             this.shots = maxNumberOfShots;
+            this.emptyGun = false;
         }
 
     }
@@ -434,7 +435,6 @@ public abstract class Robot {
         if (maxNumberOfShots == 1) {distance = 5;}
 
         if (!emptyGun) {
-            updateShots("shoot");
             for (int i = 0; i <= distance; i++) {
 
                 if (Direction.NORTH.equals(this.currentDirection)) {

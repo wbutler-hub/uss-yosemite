@@ -55,14 +55,17 @@ public class ServerSetup implements Runnable{
                     jsonString = jsonString.trim();
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
+
                     Server.userStatuses.set(index, getRobotState());
                     System.out.println(Server.userNames.get(index) + ": " + robot.getStatus());
 //                    System.out.println(robot.getPosition().getX());
 //                    System.out.println(robot.getPosition().getY());
 //                    System.out.println(robot.getShield());
 //                    System.out.println(robot.getObjects());
-//                    System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-//                    out.println("Thanks for this message: " + messageFromClient);
+
+                    System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
+                    out.println("Thanks for this message: " + messageFromClient);
+
 //                    response.setStatus();
 //                    response.setResponse();
 //                    response.setMovement(jsonString);
