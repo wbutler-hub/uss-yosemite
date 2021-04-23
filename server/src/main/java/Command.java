@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Command {
     private final String name;
     private String argument;
@@ -43,8 +40,14 @@ public abstract class Command {
                 }
             case "repair":
                 return new RepairCommand();
+            case "reload":
+                return new ReloadCommand();
             case "mine":
                 return new MineCommand();
+            case "fire":
+                return new FireCommand();
+            case "look":
+                return new LookCommand();
 
             default:
                 throw new IllegalArgumentException("Unsupported command: " + instruction);

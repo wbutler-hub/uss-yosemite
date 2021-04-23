@@ -1,21 +1,15 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Server {
     public static ArrayList<String> userRobotNames = new ArrayList<>();
 //    HashMap<String, Robot> robots = new HashMap<String, Robot>();
     public static ArrayList<Response> userResponses = new ArrayList<>();
-
+    public final static ArrayList<String> userNames = new ArrayList<>();
 
     private static World world;
-
-
 
     public static void main(String[] args) throws IOException {
         world = new World();

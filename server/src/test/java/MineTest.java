@@ -13,6 +13,7 @@ public class MineTest {
         World world = new World();
         world.setObstructionsEmpty();
         robot = Robot.create("Dummy","test", world );
+        robot.setPosition(new Position(0,0));
         MineCommand command = new MineCommand();
         assertTrue(robot.handleCommand(command));
         assertEquals(world.getMineList().size(),1);
@@ -29,6 +30,7 @@ public class MineTest {
         World world = new World();
         world.setObstructionsEmpty();
         robot = Robot.create("Dummy","test", world );
+        robot.setPosition(new Position(0,0));
         MineCommand command = new MineCommand();
         assertEquals(robot.getShield(),3);
         assertTrue(robot.handleCommand(command));
