@@ -461,7 +461,7 @@ public abstract class Robot {
                     if (!robot.equals(this)) {
                         if (robot.blocksPosition(newPosition)) {
                             robot.updateShield("shot");
-                            Server.userStatuses.set(robot.getIndex(), Robot.getState(robot));
+                            Server.userStatuses.set(robot.getIndex(), ServerCommandLine.getState(robot));
                             return true;
                         }
                     }
@@ -482,15 +482,7 @@ public abstract class Robot {
 
     public Boolean getEmptyGun() { return emptyGun; }
 
-    public static String getState(Robot robot) {
-        return "state: {\n" +
-                "position: [" + robot.getPosition().getX() + "," + robot.getPosition().getY() + "]\n" +
-                "direction: " + robot.getCurrentDirection() + "\n" +
-                "shields: " + robot.getShield() + "\n" +
-                "shots: " + robot.getShots() + "\n" +
-                "status: " + robot.getStatus() + "\n"+
-                "}";
-    }
+
 
     public int getIndex() {
         return index;

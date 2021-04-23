@@ -33,7 +33,7 @@ public class ServerSetup implements Runnable{
             Command command;
             response = new Response(robot);
             robot.setIndex(index);
-            Server.userStatuses.add(Robot.getState(robot));
+            Server.userStatuses.add(ServerCommandLine.getState(robot));
 
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
@@ -56,7 +56,7 @@ public class ServerSetup implements Runnable{
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
 
-                    Server.userStatuses.set(index, Robot.getState(robot));
+                    Server.userStatuses.set(index, ServerCommandLine.getState(robot));
                     System.out.println(Server.userNames.get(index) + ": " + robot.getStatus());
 //                    System.out.println(robot.getPosition().getX());
 //                    System.out.println(robot.getPosition().getY());

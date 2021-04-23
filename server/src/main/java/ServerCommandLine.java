@@ -62,4 +62,14 @@ public class ServerCommandLine implements Runnable {
             }
         }
     }
+
+    public static String getState(Robot robot) {
+        return "state: {\n" +
+                "position: [" + robot.getPosition().getX() + "," + robot.getPosition().getY() + "]\n" +
+                "direction: " + robot.getCurrentDirection() + "\n" +
+                "shields: " + robot.getShield() + "\n" +
+                "shots: " + robot.getShots() + "\n" +
+                "status: " + robot.getStatus() + "\n"+
+                "}";
+    }
 }
