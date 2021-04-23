@@ -38,10 +38,10 @@ public class ServerCommandLine implements Runnable {
     }
 
     public void robotsCommand() {
-        for(int i = 0; i < Server.userRobotNames.size(); i++){
-            String botName = Server.userRobotNames.get(i);
+        for(int i = 0; i < Server.userNames.size(); i++){
+            String botName = Server.userNames.get(i);
             if (botName != null) {
-                System.out.println(botName + ":\n" + Server.userResponses.get(i).getStatus());
+                System.out.println(botName + ":\n" + Server.userStatuses.get(i) + "\n");
             }
         }
     }
@@ -54,10 +54,10 @@ public class ServerCommandLine implements Runnable {
     }
 
     public void purgeCommand(String name) {
-        for (int i = 0; i < Server.userRobotNames.size(); i++) {
-            String botName = Server.userRobotNames.get(i);
+        for (int i = 0; i < Server.userNames.size(); i++) {
+            String botName = Server.userNames.get(i);
             if (botName != null && botName.equalsIgnoreCase(name)) {
-                Server.userRobotNames.set(i, null);
+                Server.userNames.set(i, null);
                 serverThreads.get(i).interrupt();
             }
         }

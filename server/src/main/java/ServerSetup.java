@@ -15,6 +15,7 @@ public class ServerSetup implements Runnable{
     private JSONObject JsonData;
     private Response response;
     private final int index;
+    private Robot robot;
 
     public ServerSetup(Socket socket) throws IOException {
         clientMachine = socket.getInetAddress().getHostName();
@@ -29,10 +30,10 @@ public class ServerSetup implements Runnable{
 
     public void run() {
         try {
-            Robot robot = new StandardRobot("Init");
+            robot = new StandardRobot("Init");
             Command command;
             response = new Response(robot);
-            Server.userResponses.add(response);
+            Server.userStatuses.add(getRobotState());
 
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
@@ -54,13 +55,14 @@ public class ServerSetup implements Runnable{
                     jsonString = jsonString.trim();
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
-                    System.out.println(robot.getPosition().getX());
-                    System.out.println(robot.getPosition().getY());
-                    System.out.println(robot.getShield());
-                    System.out.println(robot.getObjects());
-                    System.out.println(robot.getStatus());
-                    System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-                    out.println("Thanks for this message: " + messageFromClient);
+                    Server.userStatuses.set(index, getRobotState());
+                    System.out.println(Server.userNames.get(index) + ": " + robot.getStatus());
+//                    System.out.println(robot.getPosition().getX());
+//                    System.out.println(robot.getPosition().getY());
+//                    System.out.println(robot.getShield());
+//                    System.out.println(robot.getObjects());
+//                    System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
+//                    out.println("Thanks for this message: " + messageFromClient);
 //                    response.setStatus();
 //                    response.setResponse();
 //                    response.setMovement(jsonString);
@@ -96,6 +98,14 @@ public class ServerSetup implements Runnable{
 
     private String getName(){return (String) this.JsonData.get("name");}
 
-
+    private String getRobotState() {
+        return "state: {\n" +
+                "position: [" + robot.getPosition().getX() + "," + robot.getPosition().getY() + "]\n" +
+                "direction: " + robot.getCurrentDirection() + "\n" +
+                "shields: " + robot.getShield() + "\n" +
+                "shots: " + robot.getShots() + "\n" +
+                "status: " + robot.getStatus() +
+                "}";
+    }
 }
 

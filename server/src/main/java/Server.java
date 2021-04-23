@@ -4,9 +4,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-    public static ArrayList<String> userRobotNames = new ArrayList<>();
 //    HashMap<String, Robot> robots = new HashMap<String, Robot>();
-    public static ArrayList<Response> userResponses = new ArrayList<>();
+    public static ArrayList<String> userStatuses = new ArrayList<>();
     public final static ArrayList<String> userNames = new ArrayList<>();
 
     private static World world;

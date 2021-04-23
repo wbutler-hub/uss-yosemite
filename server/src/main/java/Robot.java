@@ -237,14 +237,15 @@ public abstract class Robot {
     public static Robot create(String name, String type) {
         switch (type) {
             case "test":
-                return new StandardRobot(name);
-            case "sniper":
-                return new SniperRobot(name);
             case "robot":
             case "standard":
                 return new StandardRobot(name);
-
-
+            case "sniper":
+                return new SniperRobot(name);
+            case "fighter":
+                return new FighterRobot(name);
+            case "tank":
+                return new TankRobot(name);
             default:
                 throw new IllegalArgumentException("Unsupported type: "+type );
         }
