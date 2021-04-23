@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Server {
-    public static ArrayList<String> userNames = new ArrayList<>();
+    public static ArrayList<String> userRobotNames = new ArrayList<>();
 //    HashMap<String, Robot> robots = new HashMap<String, Robot>();
     public static ArrayList<Response> userResponses = new ArrayList<>();
 
