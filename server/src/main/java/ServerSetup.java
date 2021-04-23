@@ -54,15 +54,16 @@ public class ServerSetup implements Runnable{
 
                     System.out.println(robot.getPosition().getX());
                     System.out.println(robot.getPosition().getY());
-                    response = new Response(robot);
+//                    response = new Response(robot);
 
 
-                    response.setResult(jsonString);
+                    System.out.println(jsonString);
+                    System.out.println(Response.setResult(jsonString,robot));
 
 
 
 
-                    System.out.println(response.setResult(jsonString));
+//                    System.out.println(response.setResult(jsonString));
 
 
 

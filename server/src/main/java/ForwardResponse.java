@@ -2,7 +2,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ForwardResponse extends Response {
-    private Robot robot;
     //JSONObject Direction;
     Response response;
     private JSONObject movements;
@@ -14,7 +13,9 @@ public class ForwardResponse extends Response {
 
 
     public ForwardResponse(Robot robot){
+
         super(robot);
+        this.robot = robot;
     }
 
     public JSONObject executeRsponse () {
@@ -31,9 +32,9 @@ public class ForwardResponse extends Response {
 //            this.positionY = robot.getPosition().getY();
 //            this.position = new int[]{positionX, positionY};
 //            this.Direction = new JSONObject();
-            jsonArray.put(0);
-            jsonArray.put(0);
-            Direction direction = Direction.NORTH;
+            jsonArray.put(robot.getPosition().getX());
+            jsonArray.put(robot.getPosition().getY());
+            Direction direction = robot.getCurrentDirection();
             String result = "OK";
 
             Data.put("messgae", "done");

@@ -30,7 +30,7 @@ public class Response {
 //            System.out.println("updating back");////////////////////////
 //        }
 //    }
-    public JSONObject setResult(String instruction){
+    public static JSONObject setResult(String instruction, Robot robot){
 
 
         String[] args = instruction.toLowerCase().trim().split(" ");
