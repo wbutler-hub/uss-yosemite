@@ -3,13 +3,14 @@ import org.json.JSONObject;
 
 public class RepairResponse extends Response{
 
-    private Robot robots;
-
     Response response;
 
 
 
-
+    public RepairResponse(Robot robot){
+        super(robot);
+        this.robot = robot;
+    }
 
 
     public JSONObject executeRsponse () {
@@ -30,6 +31,7 @@ public class RepairResponse extends Response{
         Data.put("messgae", "done");
         State.put("position",position );
         State.put("direction", direction);
+        State.put("shield",robot.getShield());
         State.put("status",status);
         response.put("result",result);
         response.put("data",Data);

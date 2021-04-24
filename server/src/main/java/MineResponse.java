@@ -3,13 +3,15 @@ import org.json.JSONObject;
 
 public class MineResponse extends Response {
 
-    private Robot robots;
+
 
     Response response;
 
 
-
-
+    public MineResponse(Robot robot){
+        super(robot);
+        this.robot = robot;
+    }
 
 
     public JSONObject executeRsponse () {
@@ -26,7 +28,13 @@ public class MineResponse extends Response {
         position.put(robot.getPosition().getY());
         Direction direction = robot.getCurrentDirection();
         String result = "OK";
-        String status = "SETMINE";
+        String status = "";
+
+        if(!robot.alive){
+            status = "DEAD";
+        }else if(robot.alive){
+            status = "SETMINE";
+        }
         Data.put("messgae", "done");
         State.put("position",position );
         State.put("direction", direction);

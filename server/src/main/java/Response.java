@@ -1,10 +1,9 @@
 import org.json.JSONObject;
 
 public class Response {
-    JSONObject movement;
+
     Robot robot;
     public  Response( Robot robot){
-
         this.robot = robot;
 
     }
@@ -13,36 +12,21 @@ public class Response {
 
     }
 
-//    public void setMovement(String instruction) {
-//        String[] args = instruction.toLowerCase().trim().split(" ");
-//        this.movement = new JSONObject();
-//
-//        this.movement = new JSONObject();
-//
-//        if (args[0].equals("forward")) {
-//            int nrSteps = Integer.parseInt(args[1]);
-//            this.movement.put("forward", nrSteps);
-//            System.out.println("updating forward");////////////////////////
-//
-//        }else if(args[0].equals("back")){
-//            int nrSteps = Integer.parseInt(args[1]);
-//            this.movement.put("back", nrSteps);
-//            System.out.println("updating back");////////////////////////
-//        }
-//    }
     public static JSONObject setResult(String instruction, Robot robot){
 
 
         String[] args = instruction.toLowerCase().trim().split(" ");
         switch (args[0]){
             case "forward":
-                return new ForwardResponse(robot).executeRsponse();
+                return new ForwardResponse(robot).executeRsponse(instruction);
             case "back":
-                return new BackResponse().executeRsponse();
+                return new BackResponse(robot).executeRsponse(instruction);
             case "mine":
-                return new MineResponse().executeRsponse();
+                return new MineResponse(robot).executeRsponse();
             case "repair":
-                return new RepairResponse().executeRsponse();
+                return new RepairResponse(robot).executeRsponse();
+            case "fire":
+                return new FireResponse(robot).executeRsponse();
         }
         return null;
     }

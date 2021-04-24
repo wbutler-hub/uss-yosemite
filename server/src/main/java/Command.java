@@ -33,16 +33,10 @@ public abstract class Command {
         String[] args = instruction.toLowerCase().trim().split(" ");
         switch (args[0]){
             case "forward":
-                forward = true;
-                back = false;
-                mine = false;
-                repair = false;
+
                 return new ForwardCommand(args[1]);
             case "back":
-                back = true;
-                forward = false;
-                mine = false;
-                repair = false;
+
                 return new BackCommand(args[1]);
             case "turn":
                 if (args[1].equals("right")) {
@@ -52,20 +46,13 @@ public abstract class Command {
                     return new LeftCommand();
                 }
             case "repair":
-                forward = false;
-                back = false;
-                repair = false;
-                mine = false;
-                repair = true;
+
 
                 return new RepairCommand();
             case "reload":
                 return new ReloadCommand();
             case "mine":
-                forward = false;
-                back = false;
-                repair = false;
-                mine = true;
+
                 return new MineCommand();
             case "fire":
                 return new FireCommand();

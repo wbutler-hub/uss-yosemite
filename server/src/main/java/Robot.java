@@ -21,7 +21,7 @@ public abstract class Robot {
     private int shots;
     private int maxNumberOfShots;
     private int maxShield;
-    private boolean alive;
+    public boolean alive;
     private boolean emptyGun;
     private final int repairSpeed;
     private final int mineSpeed;
@@ -181,7 +181,7 @@ public abstract class Robot {
 
             shield = maxShield;
         }
-
+        System.out.println("SHIELDS "+shield);
     }
 
     public void setMine() {
@@ -218,6 +218,7 @@ public abstract class Robot {
         if(option.equals("reload")) {
             sleep(this.reloadSpeed);
             this.shots = maxNumberOfShots;
+
             this.emptyGun = false;
         }
 
@@ -285,6 +286,7 @@ public abstract class Robot {
     }
 
     public int getShield() {
+        System.out.println("shields "+ shield);
         return shield;
     }
 
@@ -436,6 +438,9 @@ public abstract class Robot {
 
             }
         }
+        System.out.println("Object JSON " + this.objects);
+        System.out.println("visibility " + this.visibility);
+        System.out.println("ObjectDATA " + objectData);
     }
 
     public boolean updateBullet() {
@@ -492,6 +497,7 @@ public abstract class Robot {
     }
 
     public int getShots() {
+
         return shots;
     }
 
