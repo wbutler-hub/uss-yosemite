@@ -16,8 +16,8 @@ public class World {
     private int repairSpeed; // Repair speed in seconds
     private int mineSpeed;   // Speed of which a mine is placed in seconds
 
-    private ArrayList<Obstacle> obstacleList;
-    private ArrayList<Pit> pitList;
+    private static ArrayList<Obstacle> obstacleList;
+    private static ArrayList<Pit> pitList;
     private ArrayList<Mine> mineList;
 
     private HashMap<String, Robot> robots = new HashMap<String, Robot>();
@@ -108,11 +108,11 @@ public class World {
 
     public int getMineSpeed() { return mineSpeed; }
 
-    public ArrayList<Obstacle> getObstacleList() {
+    public static ArrayList<Obstacle> getObstacleList() {
         return obstacleList;
     }
 
-    public ArrayList<Pit> getPitList() {
+    public static ArrayList<Pit> getPitList() {
         return pitList;
     }
 

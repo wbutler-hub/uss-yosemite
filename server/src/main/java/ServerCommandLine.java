@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -25,6 +26,9 @@ public class ServerCommandLine implements Runnable {
             }
             else if ((command.split(" "))[0].equalsIgnoreCase("purge")) {
                 purgeCommand((command.split(" "))[1]);
+            }
+            else if (command.equalsIgnoreCase("dump")) {
+                dumpCommand();
             }
         }
     }
@@ -64,6 +68,18 @@ public class ServerCommandLine implements Runnable {
                 Server.userNames.remove(name);
                 System.out.println("Purged " + name + ".");
             }
+        }
+    }
+
+    public void dumpCommand() {
+        robotsCommand();
+        System.out.println("Obstacles: ");
+        for(Obstacle obs : World.getObstacleList()) {
+            System.out.println(obs);
+        }
+        System.out.println("\nPits: ");
+        for(Pit p : World.getPitList()) {
+            System.out.println(p);
         }
     }
 
