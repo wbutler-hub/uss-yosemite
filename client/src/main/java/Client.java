@@ -15,7 +15,7 @@ public class Client {
     private static String name;
 
     private static ArrayList<String> types = new ArrayList<String>
-            (List.of("standard","sniper"));
+            (List.of("standard","sniper", "tank", "fighter"));
 
 
     public static void main(String args[]) throws ClassNotFoundException{
@@ -44,6 +44,8 @@ public class Client {
 //            Display display = new Display();
             System.out.println("Robot Classes Available: \n" +
                     "Standard \n" +
+                    "Fighter \n" +
+                    "Tank \n" +
                     "Sniper");
             while (true) {
                 String type = getInput("Pick your robot class:");
@@ -101,6 +103,14 @@ public class Client {
         else if (type.equals("standard")) {
             launch = new LaunchRequest(name,"standard",
                     3,3);
+        }
+        else if (type.equals("tank")) {
+            launch = new LaunchRequest(name,"tank",
+                    5,1);
+        }
+        else if (type.equals("fighter")) {
+            launch = new LaunchRequest(name,"fighter",
+                    2,5);
         }
         return launch;
     }

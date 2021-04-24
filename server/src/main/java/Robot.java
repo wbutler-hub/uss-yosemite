@@ -6,7 +6,7 @@ import java.util.Random;
 
 
 public abstract class Robot {
-
+    private int index;
 
     public final Position CENTRE = new Position(0,0);
 
@@ -256,14 +256,15 @@ public abstract class Robot {
     public static Robot create(String name, String type) {
         switch (type) {
             case "test":
-                return new StandardRobot(name);
-            case "sniper":
-                return new SniperRobot(name);
             case "robot":
             case "standard":
                 return new StandardRobot(name);
-
-
+            case "sniper":
+                return new SniperRobot(name);
+            case "fighter":
+                return new FighterRobot(name);
+            case "tank":
+                return new TankRobot(name);
             default:
                 throw new IllegalArgumentException("Unsupported type: "+type );
         }
@@ -379,8 +380,6 @@ public abstract class Robot {
 
                 for (Pit pit: world.getPitList()) {
                     if (pit.blocksPosition(newPosition) || pit.blocksPath(this.position, newPosition)) {
-                        this.alive = false;
-                        this.position = new Position(pit.getBottomLeftPosition().getX(),pit.getBottomLeftPosition().getX());
                         objectData = new ArrayList<>();
                         objectData.add(i);
                         objectData.add(direction);
@@ -482,6 +481,7 @@ public abstract class Robot {
                     if (!robot.equals(this)) {
                         if (robot.blocksPosition(newPosition)) {
                             robot.updateShield("shot");
+                            Server.userStatuses.set(robot.getIndex(), ServerCommandLine.getState(robot));
                             return true;
                         }
                     }
@@ -502,5 +502,15 @@ public abstract class Robot {
     }
 
     public Boolean getEmptyGun() { return emptyGun; }
+
+
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 }
 

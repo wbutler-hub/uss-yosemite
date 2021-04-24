@@ -14,6 +14,7 @@ public class ServerSetup implements Runnable{
     private final String clientMachine;
     private JSONObject JsonData;
     private Response response;
+    private final int index;
 
 
     public ServerSetup(Socket socket) throws IOException {
@@ -25,6 +26,7 @@ public class ServerSetup implements Runnable{
                 socket.getInputStream()));
         System.out.println("Waiting for client...");
 
+        index = Server.userNames.size();
 
     }
 
@@ -33,10 +35,19 @@ public class ServerSetup implements Runnable{
             Robot robot = new StandardRobot("Init");
             Command command;
 
+            response = new Response(robot);
+            robot.setIndex(index);
+            Server.userStatuses.add(ServerCommandLine.getState(robot));
+
+
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
             boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
+
             while((messageFromClient = in.readLine()) != null) {
+
+
+            while((messageFromClient = in.readLine()) != null && !Thread.interrupted()) {
 
                 requestUsed = messageFromClient.contains("{");
                 if (requestUsed) {
@@ -56,6 +67,7 @@ public class ServerSetup implements Runnable{
                     boolean shouldContinue = robot.handleCommand(command);
 
 
+
                     System.out.println(robot.getPosition().getX());
                     System.out.println(robot.getPosition().getY());
 //                    response = new Response(robot);
@@ -73,8 +85,18 @@ public class ServerSetup implements Runnable{
 
 
 
+                    Server.userStatuses.set(index, ServerCommandLine.getState(robot));
+                    System.out.println(Server.userNames.get(index) + ": " + robot.getStatus());
+
+
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
                     out.println("Thanks for this message: " + messageFromClient);
+
+
+//                    response.setStatus();
+//                    response.setResponse();
+//                    response.setMovement(jsonString);
+//                    System.out.println(response.getStatus());
 
 
 
