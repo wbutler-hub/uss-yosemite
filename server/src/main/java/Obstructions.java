@@ -74,4 +74,9 @@ public abstract class Obstructions {
 
         return false;
     }
+
+    @Override
+    public String toString() {
+        return topLeft + " to " + bottomRight;
+    }
 }
