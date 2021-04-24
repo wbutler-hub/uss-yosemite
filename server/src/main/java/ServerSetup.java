@@ -44,7 +44,6 @@ public class ServerSetup implements Runnable{
             String jsonString; //String that was converted from a string to a JsonObject
             boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
 
-            while((messageFromClient = in.readLine()) != null) {
 
 
             while((messageFromClient = in.readLine()) != null && !Thread.interrupted()) {
@@ -75,14 +74,6 @@ public class ServerSetup implements Runnable{
 
                     System.out.println(jsonString);
                     System.out.println(Response.setResult(jsonString,robot));
-
-
-
-
-//                    System.out.println(response.setResult(jsonString));
-
-
-
 
 
                     Server.userStatuses.set(index, ServerCommandLine.getState(robot));
