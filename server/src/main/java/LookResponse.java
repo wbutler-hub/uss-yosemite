@@ -43,7 +43,7 @@ public class LookResponse extends Response{
         response.put("result",result);
         response.put("data",Data);
         response.put("state",State);
-
+        System.out.println(robot.getObjects());
         return response;
     }
 }
