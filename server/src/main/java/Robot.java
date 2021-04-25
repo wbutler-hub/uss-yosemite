@@ -163,17 +163,6 @@ public abstract class Robot {
         }
         if (option.equals("repair")) {
 
-            try
-            {
-                Long millisecs = this.repairSpeed * 1000L;
-                Thread.sleep(millisecs);
-            }
-            catch(InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
-
-
             sleep(this.repairSpeed);
 
             shield = maxShield;
