@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Client {
     private static final String SERVER_HOST= "localhost";
     private static final int SERVER_PORT= 5000;
     private static Scanner scanner = new Scanner(System.in);
     private static String name;
+
     private static ArrayList<String> types = new ArrayList<String>
             (List.of("standard","sniper", "tank", "fighter"));
 
@@ -31,7 +33,7 @@ public class Client {
                 out.println(name.toLowerCase());
                 messageFromServer = in.readLine();
                 System.out.println(messageFromServer);
-                if (messageFromServer.equals("This username is already taken")) {
+                if (messageFromServer.equals("Too many of you in this world")) {
                     continue;
                 }
                 else {
@@ -58,6 +60,7 @@ public class Client {
                 }
             }
 
+            System.out.println("Hello Kiddo!");
             Request request = null;
             boolean shouldContinue = true;
             do {
@@ -68,12 +71,13 @@ public class Client {
                 try {
                     request = request.create(instruction, name);
                     out.println(request.getRequest());
+                    messageFromServer = in.readLine();
+
+                    System.out.println(messageFromServer);
                 } catch (IllegalArgumentException e) {
                 }
 
-
             } while (shouldContinue);
-            System.out.println("Hello Kiddo!");
         } catch (IOException e) {
             e.printStackTrace();
         }

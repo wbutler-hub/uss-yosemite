@@ -16,6 +16,7 @@ public class ServerSetup implements Runnable{
     private Response response;
     private final int index;
 
+
     public ServerSetup(Socket socket) throws IOException {
         clientMachine = socket.getInetAddress().getHostName();
         System.out.println("Connection from " + clientMachine);
@@ -24,21 +25,28 @@ public class ServerSetup implements Runnable{
         in = new BufferedReader(new InputStreamReader(
                 socket.getInputStream()));
         System.out.println("Waiting for client...");
-        index = Server.userNames.size();
+
+        index = ServerCommandLine.serverThreads.size();
+
     }
 
     public void run() {
         try {
             Robot robot = new StandardRobot("Init");
             Command command;
+
             response = new Response(robot);
-            robot.setIndex(index);
-            Server.userStatuses.add(ServerCommandLine.getState(robot));
+
 
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
             boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
-            while((messageFromClient = in.readLine()) != null && !Thread.interrupted()) {
+
+
+
+            while((messageFromClient = in.readLine()) != null && !Thread.interrupted()
+            && robot.isAlive()) {
+
                 requestUsed = messageFromClient.contains("{");
                 if (requestUsed) {
                     JsonData = new JSONObject(messageFromClient);
@@ -56,32 +64,34 @@ public class ServerSetup implements Runnable{
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
 
-                    Server.userStatuses.set(index, ServerCommandLine.getState(robot));
-                    System.out.println(Server.userNames.get(index) + ": " + robot.getStatus());
+
+                    ServerCommandLine.robotStates.put(robot.getName(), ServerCommandLine.getState(robot));
+                    System.out.println(robot.getName() + ": " + robot.getStatus());
+
+
 
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-                    out.println("Thanks for this message: " + messageFromClient);
 
-//                    response.setStatus();
-//                    response.setResponse();
-//                    response.setMovement(jsonString);
-//                    System.out.println(response.getStatus());
+                    out.println("Thanks for this message: " + Response.setResult(jsonString,robot));
 
 
                 }
                 else {
                     if(Server.userNames.contains(messageFromClient)) {
-                        out.println("This username is already taken");
+                        out.println("Too many of you in this world");
                     }
                     else {
                         Server.userNames.add(messageFromClient);
                         out.println("Username accepted!");
+                        ServerCommandLine.robotStates.put(messageFromClient, "");
+                        ServerCommandLine.robotThreadIndexes.put(messageFromClient, index);
                     }
                 }
             }
         } catch(IOException ex) {
             System.out.println("Shutting down single client server");
         } finally {
+            Server.userNames.remove(getName());
             closeQuietly();
         }
     }

@@ -1,10 +1,11 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import java.util.Random;
 
 
 public abstract class Robot {
-    private int index;
 
     public final Position CENTRE = new Position(0,0);
 
@@ -13,6 +14,7 @@ public abstract class Robot {
     private String status;
     private World world;
     private final String name;
+    public static boolean obs;
 
     private int shield;
     private int shots;
@@ -37,8 +39,6 @@ public abstract class Robot {
     private final Position TOP_LEFT;
     private final Position BOTTOM_RIGHT;
 
-//    private List<Obstacle> obstacleList;
-
     public void setMaxShield(int maxShield) {this.maxShield = maxShield;}
 
     public void setMaxNumberOfShots(int maxNumberOfShots) {this.maxNumberOfShots = maxNumberOfShots;}
@@ -50,6 +50,8 @@ public abstract class Robot {
     public void setShots(int shots) {
         this.shots = shots;
     }
+
+    public String getName() { return this.name;}
 
     public Robot(String name) {
 
@@ -90,7 +92,6 @@ public abstract class Robot {
         this.position = this.START;
     }
 
-
     public boolean updatePosition(int nrSteps) {
         int newX = this.position.getX();
         int newY = this.position.getY();
@@ -109,7 +110,6 @@ public abstract class Robot {
         }
 
         Position newPosition = new Position(newX, newY);
-
         for (Obstacle obstacle: world.getObstacleList()) {
             if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
                 return false;
@@ -159,12 +159,25 @@ public abstract class Robot {
         }
         if (shield < 0) {
             alive = false;
+            shield = 0;
         }
         if (option.equals("repair")) {
+
+            try
+            {
+                Long millisecs = this.repairSpeed * 1000L;
+                Thread.sleep(millisecs);
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
+
+
             sleep(this.repairSpeed);
+
             shield = maxShield;
         }
-
     }
 
     public void setMine() {
@@ -201,6 +214,7 @@ public abstract class Robot {
         if(option.equals("reload")) {
             sleep(this.reloadSpeed);
             this.shots = maxNumberOfShots;
+
             this.emptyGun = false;
         }
 
@@ -459,7 +473,7 @@ public abstract class Robot {
                     if (!robot.equals(this)) {
                         if (robot.blocksPosition(newPosition)) {
                             robot.updateShield("shot");
-                            Server.userStatuses.set(robot.getIndex(), ServerCommandLine.getState(robot));
+                            ServerCommandLine.robotStates.put(robot.getName(), ServerCommandLine.getState(robot));
                             return true;
                         }
                     }
@@ -475,19 +489,16 @@ public abstract class Robot {
     }
 
     public int getShots() {
+
         return shots;
     }
 
     public Boolean getEmptyGun() { return emptyGun; }
 
 
-
-    public int getIndex() {
-        return index;
+    public boolean isAlive() {
+        return this.alive;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
 }
 

@@ -40,6 +40,7 @@ public class Play {
         Request request = null;
         boolean shouldContinue = true;
         do {
+
             String instruction = getInput(name + "> What must I do next?").strip().toLowerCase();
             if (instruction.equals("off")) {
                 shouldContinue = false;
