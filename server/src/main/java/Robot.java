@@ -167,7 +167,6 @@ public abstract class Robot {
             {
                 Long millisecs = this.repairSpeed * 1000L;
                 Thread.sleep(millisecs);
-                System.out.println();
             }
             catch(InterruptedException ex)
             {
@@ -284,7 +283,6 @@ public abstract class Robot {
     }
 
     public int getShield() {
-        System.out.println("shields "+ shield);
         return shield;
     }
 
@@ -434,9 +432,6 @@ public abstract class Robot {
 
             }
         }
-        System.out.println("Object JSON " + this.objects);
-        System.out.println("visibility " + this.visibility);
-        System.out.println("ObjectDATA " + objectData);
     }
 
     public boolean updateBullet() {
@@ -500,15 +495,6 @@ public abstract class Robot {
 
     public Boolean getEmptyGun() { return emptyGun; }
 
-
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
 
     public boolean isAlive() {
         return this.alive;
