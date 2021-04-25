@@ -21,7 +21,7 @@ public abstract class Robot {
     private int shots;
     private int maxNumberOfShots;
     private int maxShield;
-    public boolean alive;
+    private boolean alive;
     private boolean emptyGun;
     private final int repairSpeed;
     private final int mineSpeed;
@@ -114,7 +114,6 @@ public abstract class Robot {
         Position newPosition = new Position(newX, newY);
         for (Obstacle obstacle: world.getObstacleList()) {
             if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
-               // obs = true;
                 return false;
             }
         }
@@ -162,6 +161,7 @@ public abstract class Robot {
         }
         if (shield < 0) {
             alive = false;
+            shield = 0;
         }
         if (option.equals("repair")) {
 
@@ -181,7 +181,6 @@ public abstract class Robot {
 
             shield = maxShield;
         }
-        System.out.println("SHIELDS "+shield);
     }
 
     public void setMine() {
@@ -504,13 +503,16 @@ public abstract class Robot {
     public Boolean getEmptyGun() { return emptyGun; }
 
 
-
     public int getIndex() {
         return index;
     }
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public boolean isAlive() {
+        return this.alive;
     }
 }
 

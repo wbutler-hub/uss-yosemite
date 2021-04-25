@@ -39,12 +39,14 @@ public class ForwardResponse extends Response {
 
             String result = "OK";
 
-            Data.put("messgae", "done");
+            Data.put("message", "done");
             Data.put("movement",movement);
             Data.put("steps",steps);
             Data.put("turn",turn);
             State.put("position",position );
             State.put("direction", direction);
+            State.put("shield",robot.getShield());
+            State.put("status",robot.getStatus());
 
             response.put("result",result);
             response.put("data",Data);

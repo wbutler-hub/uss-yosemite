@@ -33,7 +33,7 @@ public class Client {
                 out.println(name.toLowerCase());
                 messageFromServer = in.readLine();
                 System.out.println(messageFromServer);
-                if (messageFromServer.equals("This username is already taken")) {
+                if (messageFromServer.equals("Too many of you in this world")) {
                     continue;
                 }
                 else {
@@ -60,23 +60,24 @@ public class Client {
                 }
             }
 
+            System.out.println("Hello Kiddo!");
             Request request = null;
             boolean shouldContinue = true;
             do {
                 String instruction = getInput(name + "> What must I do next?").strip().toLowerCase();
-                System.out.println();
                 if (instruction.equals("off")) {
                     shouldContinue = false;
                 }
                 try {
                     request = request.create(instruction, name);
                     out.println(request.getRequest());
+                    messageFromServer = in.readLine();
+
+                    System.out.println(messageFromServer);
                 } catch (IllegalArgumentException e) {
                 }
 
-
             } while (shouldContinue);
-            System.out.println("Hello Kiddo!");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -28,10 +28,11 @@ public class RepairResponse extends Response{
         Direction direction = robot.getCurrentDirection();
         String result = "OK";
         String status = "REPAIR";
-        Data.put("messgae", "done");
+        Data.put("message", "done");
         State.put("position",position );
         State.put("direction", direction);
         State.put("shield",robot.getShield());
+        State.put("shots",robot.getShots());
         State.put("status",status);
         response.put("result",result);
         response.put("data",Data);

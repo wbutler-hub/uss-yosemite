@@ -46,7 +46,8 @@ public class ServerSetup implements Runnable{
 
 
 
-            while((messageFromClient = in.readLine()) != null && !Thread.interrupted()) {
+            while((messageFromClient = in.readLine()) != null && !Thread.interrupted()
+            && robot.isAlive()) {
 
                 requestUsed = messageFromClient.contains("{");
                 if (requestUsed) {
@@ -81,7 +82,7 @@ public class ServerSetup implements Runnable{
 
 
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-                    out.println("Thanks for this message: " + messageFromClient);
+                    out.println("Thanks for this message: " + Response.setResult(jsonString,robot));
 
 
 //                    response.setStatus();
@@ -94,7 +95,7 @@ public class ServerSetup implements Runnable{
                 }
                 else {
                     if(Server.userNames.contains(messageFromClient)) {
-                        out.println("This username is already taken");
+                        out.println("Too many of you in this world");
                     }
                     else {
                         Server.userNames.add(messageFromClient);
@@ -105,6 +106,7 @@ public class ServerSetup implements Runnable{
         } catch(IOException ex) {
             System.out.println("Shutting down single client server");
         } finally {
+            Server.userNames.remove(getName());
             closeQuietly();
         }
     }

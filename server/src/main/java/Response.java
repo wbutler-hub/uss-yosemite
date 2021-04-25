@@ -27,6 +27,14 @@ public class Response {
                 return new RepairResponse(robot).executeRsponse();
             case "fire":
                 return new FireResponse(robot).executeRsponse();
+            case "look":
+                return new LookResponse(robot).executeRsponse();
+            case "reload":
+                return new ReloadResponse(robot).executeRsponse();
+            case "right":
+                return new RightResponse(robot).executeRsponse();
+            case "left":
+                return new LeftResponse(robot).executeRsponse();
         }
         return null;
     }

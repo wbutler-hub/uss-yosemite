@@ -1,12 +1,13 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class FireResponse extends Response{
+public class RightResponse extends Response{
+
     Response response;
-    FireCommand fireCommand;
 
 
-    public FireResponse(Robot robot){
+
+    public RightResponse(Robot robot){
         super(robot);
         this.robot = robot;
     }
@@ -14,9 +15,8 @@ public class FireResponse extends Response{
 
     public JSONObject executeRsponse () {
 
-        fireCommand = new FireCommand();
+
         response = new Response(robot);
-        String message = "";
         JSONObject response = new JSONObject();
         JSONArray position = new JSONArray();
         JSONObject Data = new JSONObject();
@@ -26,23 +26,13 @@ public class FireResponse extends Response{
         position.put(robot.getPosition().getX());
         position.put(robot.getPosition().getY());
         Direction direction = robot.getCurrentDirection();
-        String result = "OK";
-        String status = "FIRE";
-        if(fireCommand.hit && !fireCommand.miss){
-            message = "HIT";
-        }else if(fireCommand.miss && !fireCommand.hit){
-            message = "MISS";
-        }
-        Data.put("messsage", message);
-
+        String result = "OK";;
+        Data.put("message", "done");
         State.put("position",position );
         State.put("direction", direction);
-
-        State.put("status",status);
-        State.put("shots",robot.getShots());
         State.put("shield",robot.getShield());
         State.put("shots",robot.getShots());
-        State.put("status",status);
+        State.put("status",robot.getStatus());
         response.put("result",result);
         response.put("data",Data);
         response.put("state",State);

@@ -30,14 +30,16 @@ public class MineResponse extends Response {
         String result = "OK";
         String status = "";
 
-        if(!robot.alive){
+        if(!robot.isAlive()){
             status = "DEAD";
-        }else if(robot.alive){
+        }else if(robot.isAlive()){
             status = "SETMINE";
         }
-        Data.put("messgae", "done");
+        Data.put("message", "done");
         State.put("position",position );
         State.put("direction", direction);
+        State.put("shield",robot.getShield());
+        State.put("shots",robot.getShots());
         State.put("status",status);
         response.put("result",result);
         response.put("data",Data);
