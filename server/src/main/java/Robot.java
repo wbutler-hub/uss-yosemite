@@ -1,5 +1,7 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import java.util.Random;
 
 
@@ -12,6 +14,7 @@ public abstract class Robot {
     private String status;
     private World world;
     private final String name;
+    public static boolean obs;
 
     private int shield;
     private int shots;
@@ -107,7 +110,6 @@ public abstract class Robot {
         }
 
         Position newPosition = new Position(newX, newY);
-
         for (Obstacle obstacle: world.getObstacleList()) {
             if (obstacle.blocksPosition(newPosition) || obstacle.blocksPath(this.position, newPosition)) {
                 return false;
@@ -157,12 +159,26 @@ public abstract class Robot {
         }
         if (shield < 0) {
             alive = false;
+            shield = 0;
         }
         if (option.equals("repair")) {
+
+            try
+            {
+                Long millisecs = this.repairSpeed * 1000L;
+                Thread.sleep(millisecs);
+                System.out.println();
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
+
+
             sleep(this.repairSpeed);
+
             shield = maxShield;
         }
-
     }
 
     public void setMine() {
@@ -199,6 +215,7 @@ public abstract class Robot {
         if(option.equals("reload")) {
             sleep(this.reloadSpeed);
             this.shots = maxNumberOfShots;
+
             this.emptyGun = false;
         }
 
@@ -267,6 +284,7 @@ public abstract class Robot {
     }
 
     public int getShield() {
+        System.out.println("shields "+ shield);
         return shield;
     }
 
@@ -416,6 +434,9 @@ public abstract class Robot {
 
             }
         }
+        System.out.println("Object JSON " + this.objects);
+        System.out.println("visibility " + this.visibility);
+        System.out.println("ObjectDATA " + objectData);
     }
 
     public boolean updateBullet() {
@@ -473,9 +494,25 @@ public abstract class Robot {
     }
 
     public int getShots() {
+
         return shots;
     }
 
     public Boolean getEmptyGun() { return emptyGun; }
+
+
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public boolean isAlive() {
+        return this.alive;
+    }
+
 }
 

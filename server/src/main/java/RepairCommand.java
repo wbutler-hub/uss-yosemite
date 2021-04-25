@@ -6,6 +6,7 @@ public class RepairCommand extends Command{
     @Override
     public boolean execute(Robot target) {
         target.updateShield("repair");
+        System.out.println();
         target.setStatus("REPAIR");
         return true;
     }
