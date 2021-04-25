@@ -46,6 +46,7 @@ public class ForwardResponse extends Response {
             State.put("position",position );
             State.put("direction", direction);
             State.put("shield",robot.getShield());
+            State.put("shots",robot.getShots());
             State.put("status",robot.getStatus());
 
             response.put("result",result);

@@ -38,6 +38,7 @@ public class ServerSetup implements Runnable{
             response = new Response(robot);
 
 
+            Object responseString;
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
             boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
@@ -66,14 +67,13 @@ public class ServerSetup implements Runnable{
 
 
                     ServerCommandLine.robotStates.put(robot.getName(), ServerCommandLine.getState(robot));
-                    System.out.println(robot.getName() + ": " + robot.getStatus());
 
 
 
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
 
-                    out.println("Thanks for this message: " + Response.setResult(jsonString,robot));
 
+                    out.println(Response.setResult(jsonString, robot).toString());
 
                 }
                 else {

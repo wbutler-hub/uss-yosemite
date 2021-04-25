@@ -33,7 +33,7 @@ public class FireResponse extends Response{
         }else if(fireCommand.miss && !fireCommand.hit){
             message = "MISS";
         }
-        Data.put("messsage", message);
+        Data.put("message", robot.getStatus());
 
         State.put("position",position );
         State.put("direction", direction);
@@ -42,7 +42,7 @@ public class FireResponse extends Response{
         State.put("shots",robot.getShots());
         State.put("shield",robot.getShield());
         State.put("shots",robot.getShots());
-        State.put("status",status);
+        State.put("status","FIRE");
         response.put("result",result);
         response.put("data",Data);
         response.put("state",State);

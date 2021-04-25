@@ -31,11 +31,15 @@ public class Response {
                 return new LookResponse(robot).executeRsponse();
             case "reload":
                 return new ReloadResponse(robot).executeRsponse();
-            case "right":
-                return new RightResponse(robot).executeRsponse();
-            case "left":
-                return new LeftResponse(robot).executeRsponse();
+            case "turn":
+                if (args[1].equals("right")) {
+                    return new LeftResponse(robot).executeRsponse();
+                }
+                if (args[1].equals("left")) {
+                    return new LeftResponse(robot).executeRsponse();
+                }
         }
+
         return null;
     }
 

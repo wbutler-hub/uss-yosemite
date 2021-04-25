@@ -1,3 +1,6 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +16,8 @@ public class Client {
     private static final int SERVER_PORT= 5000;
     private static Scanner scanner = new Scanner(System.in);
     private static String name;
+    private static Display display;
+    private static boolean killed = false;
 
     private static ArrayList<String> types = new ArrayList<String>
             (List.of("standard","sniper", "tank", "fighter"));
@@ -41,7 +46,12 @@ public class Client {
                 }
             }
 
-//            Display display = new Display();
+            display = new Display();
+//            int[] array = new int[]{50,50};
+//            display.drawPlayer(array);
+////            display.resetPlayer();
+//            array = new int[]{20,20};
+//            display.drawPlayer(array);
             System.out.println("Robot Classes Available: \n" +
                     "Standard \n" +
                     "Fighter \n" +
@@ -69,18 +79,39 @@ public class Client {
                     shouldContinue = false;
                 }
                 try {
-                    request = request.create(instruction, name);
-                    out.println(request.getRequest());
-                    messageFromServer = in.readLine();
 
-                    System.out.println(messageFromServer);
+                    request = request.create(instruction, name);
+                    if (!request.equals("off")) {
+                        out.println(request.getRequest());
+                        messageFromServer = in.readLine();
+                    }
+
+                    if(messageFromServer == null) {
+                        shouldContinue = false;
+                        killed = true;
+                    }
+                    else {
+                        JSONObject jsonObject = new JSONObject(messageFromServer);
+                        showResponse(jsonObject);
+                    }
                 } catch (IllegalArgumentException e) {
+                    if (!request.equals("off")) {
+                        System.out.println("Invalid Command or Arguments");
+                    }
                 }
 
             } while (shouldContinue);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if(killed) {
+            System.out.println("You have died (✖╭╮✖)");
+        }
+        else {
+            System.out.println("GoodBye!");
+        }
+        System.exit(0);
     }
 
     public static String getInput(String prompt) {
@@ -116,5 +147,28 @@ public class Client {
         return launch;
     }
 
+    private static void showResponse(JSONObject jsonObject) {
+        JSONObject state = (JSONObject) jsonObject.get("state");
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        System.out.println("**********************************"+"\n");
+        System.out.println("Result: "+jsonObject.get("result"));
+        System.out.println("Data: ");
+        System.out.println("Message: "+data.get("message"));
+        if (data.has("objects")) {
+            System.out.println("Objects: "+data.get("objects"));
+        }
+        System.out.println("State: ");
+        System.out.println("Shield: "+state.get("shield"));
+        System.out.println("Position: "+state.get("position"));
+        display.drawPlayer((JSONArray) state.get("position"));
+        System.out.println("Shots: "+state.get("shots"));
+        System.out.println("Direction: "+state.get("direction"));
+        if (data.has("objects")) {
+            display.drawObstruction((JSONArray) data.get("objects"));
+        }
+        System.out.println("Status: "+state.get("status"));
+        System.out.println("\n"+"**********************************");
+
+    }
 
 }
