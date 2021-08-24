@@ -13,10 +13,13 @@ public class Server {
 
     private static World world;
 
-
-
     public static DataOutputStream Output;
 
+    /**
+     * The main place to run the server, sets up the world, the and waits for threads. <br/>
+     * while the server is up, it will wait for clients to connect to the server, and run continuously <br/>
+     * It will send the commands through to server.
+     * */
     public static void main(String[] args) throws IOException {
         world = new World();
 
@@ -46,11 +49,16 @@ public class Server {
     }
 
 
-
+    /**
+     * @return the world.
+     * */
     public static World getWorld() {
         return world;
     }
 
+    /**
+     * force quits the server from running.
+     * */
     public static void endServer() {
         System.exit(0);
     }

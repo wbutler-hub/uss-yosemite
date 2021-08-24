@@ -7,13 +7,22 @@ public class MineResponse extends Response {
 
     Response response;
 
-
+    /**
+     * Constructor for MineResponse, from extending response;
+     * @param robot: takes the robot object;
+     * sets the robot.
+     * */
     public MineResponse(Robot robot){
         super(robot);
         this.robot = robot;
     }
 
-
+    /**
+     * Sets up a JSONObject, it receives an instruction (command). <br/>
+     * Creates the new positions, movements, of robot and all things in the world. <br/>
+     * it has the main check to see if the robot is dead or not, and if it can set a mine or not.
+     * @return: the response that was created.
+     * */
     public JSONObject executeRsponse () {
 
 

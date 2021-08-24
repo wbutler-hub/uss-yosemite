@@ -5,14 +5,22 @@ public class RepairResponse extends Response{
 
     Response response;
 
-
-
+    /**
+     * Constructor for MineResponse, from extending response;
+     * @param robot: takes the robot object;
+     * sets the robot.
+     * */
     public RepairResponse(Robot robot){
         super(robot);
         this.robot = robot;
     }
 
-
+    /**
+     * Sets up a JSONObject, it receives an instruction (command). <br/>
+     * Creates the new positions, movements, of robot and all things in the world. <br/>
+     * it sets status to repair to set the shield to the max
+     * @return: the response that was created.
+     * */
     public JSONObject executeRsponse () {
 
 

@@ -5,13 +5,23 @@ public class FireResponse extends Response{
     Response response;
     FireCommand fireCommand;
 
-
+    /**
+     * Constructor for FireResponse, from extending response;
+     * @param robot: takes the robot object;
+     * sets the robot.
+     * */
     public FireResponse(Robot robot){
         super(robot);
         this.robot = robot;
     }
 
-
+    /**
+     * Sets up a JSONObject, it receives an instruction (command). <br/>
+     * Creates the new positions, movements, of robot and all things in the world. <br/>
+     * puts the movement, steps, turn, and all other relevant data about the command to the response. <br/>
+     * as well as checking if it created a hit or miss from the fire
+     * @return: the response that was created.
+     * */
     public JSONObject executeRsponse () {
 
         fireCommand = new FireCommand();

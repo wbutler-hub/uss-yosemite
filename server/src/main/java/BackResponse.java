@@ -5,14 +5,23 @@ public class BackResponse extends Response{
 
     Response response;
 
-
-
+    /**
+     * Constructor for BackResponse, from extending response;
+     * @param robot: takes the robot object;
+     * sets the robot.
+     * */
     public BackResponse(Robot robot){
         super(robot);
         this.robot = robot;
     }
 
-
+    /**
+     * Sets up a JSONObject, it receives an instruction (command). <br/>
+     * Creates the new positions, movements, of robot and all things in the world. <br/>
+     * puts the movement, steps, turn, and all other relevant data about the command to the response.
+     * @param instruction: String instruction (which is the command - user input)
+     * @return: the response that was created.
+     * */
     public JSONObject executeRsponse (String instruction) {
         String movement = "";
         String steps = "";

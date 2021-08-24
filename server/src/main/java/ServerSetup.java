@@ -16,7 +16,12 @@ public class ServerSetup implements Runnable{
     private Response response;
     private final int index;
 
-
+    /**
+     * Used to set up the server, Takes the socket as a parameter. <br/>
+     * Gets the clients hostname and prints that they are connected to the server <br/>
+     * sets the PrintStream, and the Buffered reader, and waits for the clients to connect.<br/>
+     * Then waits for the threads and/or server commands
+     * */
     public ServerSetup(Socket socket) throws IOException {
         clientMachine = socket.getInetAddress().getHostName();
         System.out.println("Connection from " + clientMachine);
@@ -30,6 +35,13 @@ public class ServerSetup implements Runnable{
 
     }
 
+    /**
+     * Run the server; <br/>
+     * It sets up the robot from standards, and generates a base response. <br/>
+     * while the client is sending through responses, the thread is not interrupted and the robot is alive <br/>
+     * the the robot will run commands to make it function, else the thread will close and the robot will removed <br/>
+     * from the list of robots that are currently in the world. <br/>
+     * */
     public void run() {
         try {
             Robot robot = new StandardRobot("Init");
@@ -96,15 +108,30 @@ public class ServerSetup implements Runnable{
         }
     }
 
+    /**
+     * Used to close the input BufferedReader and out being PrintStream from server.
+     * */
     private void closeQuietly() {
         try { in.close(); out.close();
         } catch(IOException ex) {}
     }
 
+    /**
+     * used to get the command
+     * @return the command in a string format (from JSON format)
+     * */
     private String getCommand(){return (String) this.JsonData.get("command");}
 
+    /**
+     * used to get the argument
+     * @return the argument in a string format (from JSON format)
+     * */
     private JSONArray getArgument(){return (JSONArray) this.JsonData.get("arguments");}
 
+    /**
+     * used to get the name
+     * @return the name in a string format (from JSON format)
+     * */
     private String getName(){return (String) this.JsonData.get("name");}
 
 

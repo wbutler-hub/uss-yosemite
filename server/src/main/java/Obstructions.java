@@ -6,43 +6,65 @@ public abstract class Obstructions {
     private final int y;
     private final int size = 5;
 
-
-
+    /**
+     * Constructor for the Obstructions; setting up all the corners and co-ordinates.
+     * @param bottomRight: The position of the bottom right co-ordinate.
+     * @param topLeft: The position of the top left co-ordinate.
+     * */
     public Obstructions(Position topLeft, Position bottomRight) {
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
         this.bottomLeft = new Position(bottomRight.getX()-4, bottomRight.getY());
         this.x = bottomLeft.getX();
         this.y = bottomLeft.getY();
-
     }
 
-
+    /**
+     * @return the top bottom right corner.
+     * */
     public Position getBottomRightPosition() {
         return this.bottomRight;
     }
 
-
+    /**
+     * @return the top left corner.
+     * */
     public Position getTopLeftPosition() {
         return this.topLeft;
     }
 
-
+    /**
+     * @return the size of the robot;
+     * */
     public Position getBottomLeftPosition() {return  this.bottomLeft;}
 
-
+    /**
+     * @return the size of the robot;
+     * */
     public int getSize() {
         return this.size;
     }
 
+    /**
+     * @return the x co-ordinate (bottomleft);
+     * */
     public int getX() {
         return this.x;
     }
 
+    /**
+     * @return the y co-ordinate (bottomleft);
+     * */
     public int getY() {
         return this.y;
     }
 
+    /**
+     * Checks the a boolean if the position is in blocked
+     * @param position: passes through the position.
+     * @return true if the x and y is blocked.
+     * @return false, if the x and y is not blocked.
+     * */
     public boolean blocksPosition(Position position) {
         Boolean checkY = this.y <= position.getY() && (this.y + 4) >= position.getY();
         Boolean checkX = this.x <= position.getX() && (this.x + 4) >= position.getX();
@@ -53,7 +75,10 @@ public abstract class Obstructions {
         return  false;
     }
 
-
+    /**
+     * Checks to see if the original position up unto the next (newly updated) is blocked or can be done or not.
+     * @return false if it cannot be done
+     * */
     public boolean blocksPath(Position a, Position b) {
         if (a.getX() == b.getX() && (this.x <= a.getX() && a.getX() <= this.x + 4)) {
             if (b.getY() < this.y) {
@@ -75,6 +100,9 @@ public abstract class Obstructions {
         return false;
     }
 
+    /**
+     * @returns the top left position to the bottom right position
+     * */
     @Override
     public String toString() {
         return topLeft + " to " + bottomRight;

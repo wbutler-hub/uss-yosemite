@@ -1,8 +1,14 @@
 public class FireCommand extends Command{
     public boolean hit;
     public boolean miss;
-    public FireCommand() { super("fire"); }
 
+    /**
+     * First runs update bullet (see that function), updating the hit and miss states; <br/>
+     * If the update bullet fails, check if the gun is empty or not and update the status accordingly. <br/>
+     * After, sets the status of the robot to "shoot" indicating it is show.
+     * @param target: - being the robot object.
+     * @returns: true (continue the program).
+     */
     @Override
     public boolean execute(Robot target) {
         if(target.updateBullet()) {
@@ -23,4 +29,9 @@ public class FireCommand extends Command{
         target.updateShots("shoot");
         return true;
     }
+
+    /**
+     * Constructor for FireCommand
+     * */
+    public FireCommand() { super("fire"); }
 }

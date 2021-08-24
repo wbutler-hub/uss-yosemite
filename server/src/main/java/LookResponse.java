@@ -9,13 +9,22 @@ public class LookResponse extends Response {
     Response response;
     ArrayList<HashMap<String, String>> objects = new ArrayList<>();
 
-
+    /**
+     * Constructor for LookResponse, from extending response;
+     * @param robot: takes the robot object;
+     * sets the robot.
+     * */
     public LookResponse(Robot robot) {
         super(robot);
         this.robot = robot;
     }
 
-
+    /**
+     * Sets up a JSONObject, it receives an instruction (command). <br/>
+     * Creates the new positions, movements, of robot and all things in the world. <br/>
+     * puts all relevent data relating to the robot.
+     * @return: the response that was created.
+     * */
     public JSONObject executeRsponse() {
 
 
@@ -53,6 +62,12 @@ public class LookResponse extends Response {
         return response;
     }
 
+    /**
+     * Creates an array list of object data, <br/>
+     * Makes some Hashmaps (basically key-value pair/dictionary). <br/>
+     * Foreach key in the object in the robot (ln 71), and for each key (individual loop item), <br/>
+     * Creates the temp data for each type, distance and direction of robot.
+     * */
     private ArrayList<HashMap<String,String>> setObjects() {
         HashMap<Object, ArrayList<Object>> robotData = robot.getObjects();
         HashMap<String, String> tempData;
@@ -69,6 +84,11 @@ public class LookResponse extends Response {
         return objectData;
     }
 
+    /**
+     * Checks if what class type of the value is passed through.
+     * @return the type of object it encountered. <br/>
+     * Robot, Obstacle, Pit or Mine
+     * */
     private String checkObjectType(Object value) {
         if (value.getClass() == SniperRobot.class ||
                 value.getClass() == TankRobot.class ||
@@ -85,6 +105,10 @@ public class LookResponse extends Response {
         return "Robot";
     }
 
+    /**
+     * Checks the direction of the type, to see where in relation to the robot it is.
+     * @return the direction, defaulting to north.
+     * */
     private String checkDirectionType(Object value) {
         if (value.equals(Direction.NORTH)) {
             return "North";
