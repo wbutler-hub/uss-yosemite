@@ -21,6 +21,10 @@ public class Play {
         Play();
     }
 
+    /**
+     * Gets the input from the user and checks if the username is already taken
+     * Prompts user to enter a command and checks if its valid else it catches an IllegalArgumentException
+     */
     public static void Play() {
         scanner = new Scanner(System.in);
         String name;
@@ -76,6 +80,11 @@ public class Play {
         }
     }
 
+    /**
+     * Gets the user input
+     * @param prompt
+     * @return
+     */
     public static String getInput(String prompt) {
         System.out.print(prompt+"\n");
         String input = scanner.nextLine();

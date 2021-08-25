@@ -114,6 +114,11 @@ public class Client {
         System.exit(0);
     }
 
+    /**
+     * Prompts the user to get input from the user
+     * @param prompt
+     * @return input
+     */
     public static String getInput(String prompt) {
         System.out.print(prompt+"\n");
         String input = scanner.nextLine();
@@ -125,6 +130,12 @@ public class Client {
         return input;
     }
 
+    /**
+     * Checks what robot type the player chooses and adjusts the 'maxShieldStrength' and 'maxShots'
+     according to the robot type
+     * @param type
+     * @return launch
+     */
     private static LaunchRequest launchRequest(String type) {
         LaunchRequest launch = new LaunchRequest(name,"standard",
                 3,3);
@@ -147,6 +158,11 @@ public class Client {
         return launch;
     }
 
+    /**
+     * Gets the state, data, result, message, objects, shield, position, shots, direction and status from the server
+     * Prints those out in the client
+     * @param jsonObject
+     */
     private static void showResponse(JSONObject jsonObject) {
         JSONObject state = (JSONObject) jsonObject.get("state");
         JSONObject data = (JSONObject) jsonObject.get("data");
