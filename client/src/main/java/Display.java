@@ -16,6 +16,10 @@ public class Display {
         obstruction.up();
     }
 
+    /**
+     * Creates the obstacle in the robots world
+     * @param list
+     */
     public void drawObstruction(JSONArray list) {
         for (int i = 0; i < list.length(); i++) {
             JSONObject key = (JSONObject) list.get(i);
@@ -51,6 +55,10 @@ public class Display {
                 }
         }
 
+    /**
+     * Creates the robot and positions it (0,0)
+     * @param position
+     */
     public void drawPlayer(JSONArray position) {
         this.position = position;
         this.player.setPosition((int)position.get(0),(int)position.get(1));

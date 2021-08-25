@@ -4,6 +4,12 @@ import org.json.JSONObject;
 public abstract class Request {
     JSONObject request;
 
+    /**
+     * Sends a request to the server to get the name, command and arguments
+     * @param name
+     * @param command
+     * @param arguments
+     */
     public Request(String name, String command, JSONArray arguments) {
         this.request = new JSONObject();
         request.put("name", name);
@@ -11,10 +17,21 @@ public abstract class Request {
         request.put("arguments", arguments);
     }
 
+    /**
+     * A getter to get the request from the server
+     * @return request and cast to string
+     */
     public String getRequest() {
         return request.toString();
     }
 
+    /**
+     * Checks what command was entered and calls that function
+     * If an incorrect argument is entered, it will throw an error message
+     * @param instruction
+     * @param name
+     * @return
+     */
     public static Request create(String instruction, String name) {
         String[] args = instruction.toLowerCase().trim().split(" ");
         if (args.length == 1) {
