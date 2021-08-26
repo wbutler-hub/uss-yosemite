@@ -44,52 +44,55 @@ public class ServerSetup implements Runnable{
      * */
     public void run() {
         try {
-            Robot robot = new StandardRobot("Init");
+            Robot robot = new StandardRobot("HAL");
             Command command;
 
             response = new Response(robot);
-
 
             Object responseString;
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
             boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
 
-
-
             while((messageFromClient = in.readLine()) != null && !Thread.interrupted()
             && robot.isAlive()) {
 
                 requestUsed = messageFromClient.contains("{");
-                System.out.println(messageFromClient);
-                System.out.println("type: "+ messageFromClient.getClass().getSimpleName());
 
                 if (requestUsed) {
+
                     JsonData = new JSONObject(messageFromClient);
+
+                    System.out.println("JsonData: " + JsonData);
+
                     jsonString = getCommand();
-                    if (jsonString.equals("launch")) {
+                    System.out.println("jsonString: " + jsonString);
+                    if (jsonString.equals("launch") || jsonString.equals("luanch") ) {
                         robot = Robot.create(getName(),getArgument().get(0).toString());
                         robot.addRobotPair();
+
+
+                        System.out.println("aa: " + Response.setResult(JsonData.toString(), robot).toString()); //jsonstring = lauch
+                        out.println(Response.setResult(JsonData.toString(), robot).toString());
+
+
                         continue;
                     }
+
                     jsonString = jsonString.concat(" ");
                     for (int i = 0; i < getArgument().length(); i++) {
                         jsonString = jsonString.concat(getArgument().get(i).toString());
                     }
+
                     jsonString = jsonString.trim();
                     command = Command.create(jsonString);
                     boolean shouldContinue = robot.handleCommand(command);
 
-
                     ServerCommandLine.robotStates.put(robot.getName(), ServerCommandLine.getState(robot));
-
-
 
                     System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
 
-
                     out.println(Response.setResult(jsonString, robot).toString());
-
                 }
                 else {
                     if(Server.userNames.contains(messageFromClient)) {

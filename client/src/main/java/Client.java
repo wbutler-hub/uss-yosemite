@@ -33,32 +33,28 @@ public class Client {
         {
 
             String messageFromServer;
-            while (true) {
-                name = getInput("What do you want to name your robot?");
-                out.println(name.toLowerCase());
-                messageFromServer = in.readLine();
-                System.out.println(messageFromServer);
-                if (messageFromServer.equals("Too many of you in this world")) {
-                    continue;
-                }
-                else {
-                    break;
-                }
-            }
+//            while (true) {
+//            name = getInput("What do you want to name your robot?"); // {  "robot": "HAL",  "command": "launch",  "arguments": ["sniper","5","5"]}
+//            out.println(name.toLowerCase());
+            name = "HAL";
+            messageFromServer = name;
+//            System.out.println(messageFromServer);
+//            if (messageFromServer.equals("Too many of you in this world")) {
+//                continue;
+//            }
+//            else {
+//                break;
+//            }
+//          }
 
-            display = new Display();
-//            int[] array = new int[]{50,50};
-//            display.drawPlayer(array);
-////            display.resetPlayer();
-//            array = new int[]{20,20};
-//            display.drawPlayer(array);
             System.out.println("Robot Classes Available: \n" +
                     "Standard \n" +
                     "Fighter \n" +
                     "Tank \n" +
                     "Sniper");
             while (true) {
-                String type = getInput("Pick your robot class:");
+                String type = getInput("Pick your robot class:"); // {  "robot": "HAL",  "command": "launch",  "arguments": ["sniper","5","5"]}
+                // sniper
                 type = type.toLowerCase().trim();
                 if (!types.contains(type)) {
                     System.out.println("Invalid Robot Class!");
@@ -70,6 +66,7 @@ public class Client {
                 }
             }
 
+            display = new Display();
             System.out.println("Hello Kiddo!");
             Request request = null;
             boolean shouldContinue = true;
@@ -155,6 +152,7 @@ public class Client {
             launch = new LaunchRequest(name,"fighter",
                     2,5);
         }
+        System.out.println(launch);
         return launch;
     }
 
