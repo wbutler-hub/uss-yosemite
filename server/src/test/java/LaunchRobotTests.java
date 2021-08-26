@@ -36,9 +36,13 @@ class LaunchRobotTests {
         String request = "{" +
                 "  \"robot\": \"HAL\"," +
                 "  \"command\": \"launch\"," +
-                "  \"arguments\": [\"shooter\",\"5\",\"5\"]" +
+                "  \"arguments\": [\"sniper\",\"5\",\"5\"]" +
                 "}";
+
+        System.out.println(request);
+        System.out.println("type: "+ request.getClass().getSimpleName());
         JsonNode response = serverClient.sendRequest(request);
+        System.out.println("fuck");
 
         // Then I should get a valid response from the server
         assertNotNull(response.get("result"));
@@ -63,8 +67,9 @@ class LaunchRobotTests {
         String request = "{" +
                 "\"robot\": \"HAL\"," +
                 "\"command\": \"luanch\"," +
-                "\"arguments\": [\"shooter\",\"5\",\"5\"]" +
+                "\"arguments\": [\"tank\",\"5\",\"5\"]" +
                 "}";
+
         JsonNode response = serverClient.sendRequest(request);
 
         // Then I should get an error response

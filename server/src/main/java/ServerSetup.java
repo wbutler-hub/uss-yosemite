@@ -61,6 +61,9 @@ public class ServerSetup implements Runnable{
             && robot.isAlive()) {
 
                 requestUsed = messageFromClient.contains("{");
+                System.out.println(messageFromClient);
+                System.out.println("type: "+ messageFromClient.getClass().getSimpleName());
+
                 if (requestUsed) {
                     JsonData = new JSONObject(messageFromClient);
                     jsonString = getCommand();
@@ -132,7 +135,7 @@ public class ServerSetup implements Runnable{
      * used to get the name
      * @return the name in a string format (from JSON format)
      * */
-    private String getName(){return (String) this.JsonData.get("name");}
+    private String getName(){return (String) this.JsonData.get("robot");}
 
 
 }

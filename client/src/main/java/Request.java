@@ -12,7 +12,7 @@ public abstract class Request {
      */
     public Request(String name, String command, JSONArray arguments) {
         this.request = new JSONObject();
-        request.put("name", name);
+        request.put("robot", name);
         request.put("command", command);
         request.put("arguments", arguments);
     }
