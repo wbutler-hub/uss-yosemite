@@ -44,6 +44,7 @@ out/
 *.log
 
 # Package Files #
+*.jar
 *.war
 *.nar
 *.ear
