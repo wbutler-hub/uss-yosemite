@@ -80,4 +80,20 @@ class LaunchRobotTests {
         assertNotNull(response.get("data").get("message"));
         assertTrue(response.get("data").get("message").asText().contains("Unsupported command"));
     }
+  @Test
+  void robotState(){
+    //Given that I am connected to the Robot World server
+    assertTrue(serverClient.isConnected());
+    //And I want to check the current state of my robot
+    //When I send a valid launch request to the server
+    String request = "{" +
+      "  \"robot\": \"HAL\"," +
+      "  \"command\": \"launch\"," +
+      "  \"arguments\": [\"tank\",\"5\",\"5\"]" +
+      "}";
+    JsonNode response = serverClient.sendRequest(request);
+    //Then I should get a response saying the current state of my robot
+    assertNotNull(response.get("state"));
+
+  }
 }
