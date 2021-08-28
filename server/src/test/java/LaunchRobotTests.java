@@ -19,18 +19,19 @@ class LaunchRobotTests {
     private final RobotWorldClient serverClientTwo = new RobotWorldJsonClient();
 
     @BeforeEach
-    void connectToServer(){
+    void connectToServer() {
         serverClient.connect(DEFAULT_IP, DEFAULT_PORT);
         serverClientTwo.connect(DEFAULT_IP, DEFAULT_PORT);
     }
 
     @AfterEach
-    void disconnectFromServer(){
+    void disconnectFromServer() {
         serverClient.disconnect();
         serverClientTwo.disconnect();
     }
+
     @Test
-    void validLaunchShouldSucceed(){
+    void validLaunchShouldSucceed() {
         // Given that I am connected to a running Robot Worlds server
         // And the world is of size 1x1 (The world is configured or hardcoded to this size)
         assertTrue(serverClient.isConnected());
@@ -56,8 +57,9 @@ class LaunchRobotTests {
         // And I should also get the state of the robot
         assertNotNull(response.get("state"));
     }
+
     @Test
-    void invalidLaunchShouldFail(){
+    void invalidLaunchShouldFail() {
         // Given that I am connected to a running Robot Worlds server
         assertTrue(serverClient.isConnected());
 
@@ -78,7 +80,6 @@ class LaunchRobotTests {
         assertNotNull(response.get("data").get("message"));
         assertTrue(response.get("data").get("message").asText().contains("Unsupported command"));
     }
-
     @Test
     void nameAlreadyExists(){
         // Given that I am connected to a running Robot Worlds server
@@ -157,7 +158,7 @@ class LaunchRobotTests {
         //And I want to check the current state of my robot
         //When I send a valid launch request to the server
         String request = "{" +
-                "  \"robot\": \"HAL\"," +
+             "  \"robot\": \"HAL\"," +
                 "  \"command\": \"launch\"," +
                 "  \"arguments\": [\"tank\",\"5\",\"5\"]" +
                 "}";
@@ -166,5 +167,4 @@ class LaunchRobotTests {
         //Then I should get a response saying the current state of my robot
         assertNotNull(response.get("state"));
     }
-
 }
