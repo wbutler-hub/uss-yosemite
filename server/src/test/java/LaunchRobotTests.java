@@ -80,20 +80,59 @@ class LaunchRobotTests {
         assertNotNull(response.get("data").get("message"));
         assertTrue(response.get("data").get("message").asText().contains("Unsupported command"));
     }
-  @Test
-  void robotState(){
-    //Given that I am connected to the Robot World server
-    assertTrue(serverClient.isConnected());
-    //And I want to check the current state of my robot
-    //When I send a valid launch request to the server
-    String request = "{" +
-      "  \"robot\": \"HAL\"," +
-      "  \"command\": \"launch\"," +
-      "  \"arguments\": [\"tank\",\"5\",\"5\"]" +
-      "}";
-    JsonNode response = serverClient.sendRequest(request);
-    //Then I should get a response saying the current state of my robot
-    assertNotNull(response.get("state"));
 
-  }
+    private void getRobotRequest(String name){
+        String request = "{" +
+                "\"robot\": \""+name+"\"," +
+                "\"command\": \"launch\"," +
+                "\"arguments\": [\"shooter\",\"5\",\"5\"]" +
+                "}";
+
+        serverClient.sendRequest(request);
+    }
+
+    @Test
+    void notEnoughSpaceForTheRobot() {
+        // Given that I am connected to a running Robot Worlds server
+        assertTrue(serverClient.isConnected());
+
+        String request = "{" +
+                "  \"robot\": \"HAL\"," +
+                "  \"command\": \"launch\"," +
+                "  \"arguments\": [\"shooter\",\"5\",\"5\"]" +
+                "}";
+
+        getRobotRequest("ROB");
+
+        serverClient.sendRequest(request);
+
+        JsonNode response = serverClient.sendRequest(request);
+
+        // Then I should get an error response
+        assertNotNull(response.get("result"));
+        assertEquals("ERROR", response.get("result").asText());
+
+        // Then I should get a response from the server that "Too many of you in the World""
+        assertNotNull(response.get("data"));
+        assertNotNull(response.get("data").get("message"));
+        assertFalse(response.get("data").get("message").asText().contains("Too many of you in the World"));
+    }
+
+    @Test
+    void robotState(){
+        //Given that I am connected to the Robot World server
+        assertTrue(serverClient.isConnected());
+
+        //And I want to check the current state of my robot
+        //When I send a valid launch request to the server
+        String request = "{" +
+            "  \"robot\": \"HAL\"," +
+            "  \"command\": \"launch\"," +
+            "  \"arguments\": [\"tank\",\"5\",\"5\"]" +
+            "}";
+        JsonNode response = serverClient.sendRequest(request);
+
+        //Then I should get a response saying the current state of my robot
+        assertNotNull(response.get("state"));
+    }
 }
