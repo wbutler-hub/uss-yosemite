@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,7 +21,7 @@ public class Client {
     private static boolean killed = false;
 
     private static ArrayList<String> types = new ArrayList<String>
-            (List.of("standard","sniper", "tank", "fighter"));
+            (List.of("shooter","sniper", "tank", "fighter"));
 
 
     public static void main(String args[]) throws ClassNotFoundException{
@@ -33,37 +34,41 @@ public class Client {
         {
 
             String messageFromServer;
-//            while (true) {
-//            name = getInput("What do you want to name your robot?"); // {  "robot": "HAL",  "command": "launch",  "arguments": ["sniper","5","5"]}
-//            out.println(name.toLowerCase());
-            name = "HAL";
-            messageFromServer = name;
-//            System.out.println(messageFromServer);
-//            if (messageFromServer.equals("Too many of you in this world")) {
-//                continue;
-//            }
-//            else {
-//                break;
-//            }
-//          }
 
-            System.out.println("Robot Classes Available: \n" +
-                    "Standard \n" +
-                    "Fighter \n" +
-                    "Tank \n" +
-                    "Sniper");
             while (true) {
-                String type = getInput("Pick your robot class:"); // {  "robot": "HAL",  "command": "launch",  "arguments": ["sniper","5","5"]}
-                // sniper
-                type = type.toLowerCase().trim();
-                if (!types.contains(type)) {
+                String type = getInput("Please Launch Your Robot: " +
+                        "\u001B[32m" + "{name} " + "\u001B[0m" +
+                        "\u001B[34m" + "{class} " + "\u001B[0m" +
+                        "\u001B[36m" + "{shoots} " + "\u001B[0m" +
+                        "\u001B[35m" + "{shield}" + "\u001B[0m \n" +
+                        "Robot Classes Available: [Shooter, Fighter, Tank, Sniper]"); // {  "robot": "HAL",  "command": "launch",  "arguments": ["sniper","5","5"]}
+                String[] launchedSequence = type.split(" ");
+
+                name = launchedSequence[0];
+                String robotType = launchedSequence[1];
+                robotType = robotType.toLowerCase().trim();
+
+                if (!types.contains(robotType)) {
                     System.out.println("Invalid Robot Class!");
                     continue;
                 }
                 else {
                     out.println(launchRequest(type).getRequest());
-                    break;
                 }
+
+                messageFromServer = in.readLine();
+
+                System.out.println(messageFromServer);
+
+                if (messageFromServer.contains("Too many of you in this world")) {
+                    System.out.println("Too many of you in this world");
+                    continue;
+//                    out.println(launchRequest(type).getRequest());
+                } else if (messageFromServer.contains("Too many users are currently connected, Please wait for an opening.")) {
+                    System.out.println("\u001B[31m" + "Please wait for more available space" + "\u001B[0m");
+                    continue;
+                }
+                break;
             }
 
             display = new Display();
@@ -136,23 +141,22 @@ public class Client {
     private static LaunchRequest launchRequest(String type) {
         LaunchRequest launch = new LaunchRequest(name,"standard",
                 3,3);
-        if (type.equals("sniper")) {
+        if (type.contains("sniper")) {
             launch = new LaunchRequest(name,"sniper",
                     1,1);
         }
-        else if (type.equals("standard")) {
+        else if (type.contains("standard")) {
             launch = new LaunchRequest(name,"standard",
                     3,3);
         }
-        else if (type.equals("tank")) {
+        else if (type.contains("tank")) {
             launch = new LaunchRequest(name,"tank",
                     5,1);
         }
-        else if (type.equals("fighter")) {
+        else if (type.contains("fighter")) {
             launch = new LaunchRequest(name,"fighter",
                     2,5);
         }
-        System.out.println(launch);
         return launch;
     }
 

@@ -87,8 +87,10 @@ public abstract class Robot {
         this.reloadSpeed = world.getReloadSpeed();
         TOP_LEFT = new Position((-this.width),this.height);
         BOTTOM_RIGHT =new Position(this.width,(-this.height));
-        START = new Position(random.nextInt(this.width + this.width) - this.width,
-                random.nextInt(this.height + this.height) - this.height);
+//        START = new Position(random.nextInt(this.width + this.width) - this.width,
+//                random.nextInt(this.height + this.height) - this.height);
+        START = new Position((int) Math.floor(Math.random() * (this.width - (- this.width) + 1) + (-this.width)),
+                (int) Math.floor(Math.random() * (this.height - (- this.height) + 1) + (-this.height)));
         this.position = this.START;
     }
 
@@ -109,9 +111,11 @@ public abstract class Robot {
         this.mineSpeed = world.getMineSpeed();
         this.reloadSpeed = world.getReloadSpeed();
         TOP_LEFT = new Position((-this.width),this.height);
-        BOTTOM_RIGHT =new Position(this.width,(-this.height));
-        START = new Position(random.nextInt(this.width + this.width) - this.width,
-                random.nextInt(this.height + this.height) - this.height);
+        BOTTOM_RIGHT = new Position(this.width,(-this.height));
+//        START = new Position(random.nextInt(this.width + this.width) - this.width,
+//                random.nextInt(this.height + this.height) - this.height);
+        START = new Position((int) Math.floor(Math.random() * (this.width - (- this.width) + 1) + (-this.width)),
+                (int) Math.floor(Math.random() * (this.height - (- this.height) + 1) + (-this.height)));
         this.position = this.START;
     }
 
@@ -305,11 +309,12 @@ public abstract class Robot {
      * @return creates the class of the robot type, passing in the name of the robot. default is standard, else throws an exception
      * */
     public static Robot create(String name, String type) {
+        System.out.println(type);
         switch (type) {
             case "test":
             case "robot":
-            case "standard":
-                return new StandardRobot(name);
+            case "shooter":
+                return new ShooterRobot(name);
             case "sniper":
                 return new SniperRobot(name);
             case "fighter":
@@ -327,7 +332,7 @@ public abstract class Robot {
     public static Robot create(String name, String type, World world) {
         switch (type) {
             case "test":
-                return new StandardRobot(name,world);
+                return new ShooterRobot(name,world);
 
             default:
                 throw new IllegalArgumentException("Unsupported type: "+type );

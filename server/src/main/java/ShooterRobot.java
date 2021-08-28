@@ -1,4 +1,4 @@
-public class StandardRobot extends Robot{
+public class ShooterRobot extends Robot{
     private final int maxNumberOfShots = 3;
     private final int maxShield = 3;
 
@@ -7,7 +7,7 @@ public class StandardRobot extends Robot{
      * It sets the name from param, and the number of shots and shields to the max
      * @param name: String name of the robot.
      * */
-    public StandardRobot(String name) {
+    public ShooterRobot(String name) {
         super(name);
         this.setShield(maxShield);
         this.setShots(maxNumberOfShots);
@@ -21,7 +21,7 @@ public class StandardRobot extends Robot{
      * @param name: String name of the robot.
      * @param world: Sets it to the world.
      * */
-    public StandardRobot(String name, World world) {
+    public ShooterRobot(String name, World world) {
         super(name,world);
         this.setShield(maxShield);
         this.setShots(maxNumberOfShots);

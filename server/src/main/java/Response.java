@@ -1,5 +1,7 @@
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 public class Response {
     Robot robot;
 
@@ -26,19 +28,17 @@ public class Response {
      * @return: either null, or the new object call if the instruction[0] matches a command
      * */
     public static JSONObject setResult(String instruction, Robot robot){
-        System.out.println("instruction: " + instruction);
-
-        JSONObject JsonData = new JSONObject(instruction);
-        String bob = (String) JsonData.get("command");
-        System.out.println("bob: " + bob);
 
         String[] args = instruction.toLowerCase().trim().split(" ");
-
-//        switch (args[0]){
-        switch (bob){
+        System.out.println("'args origin:" +args[0]);
+        switch (args[0]){
+            case "toomanyusers":
+                System.out.println("toomany");
+                return new TooManyUsers(robot).executeRsponse();
+            case "nameinuse":
+                return new NameInUse(robot).executeRsponse();
             case "launch":
-                System.out.println(new JSONObject("{result:OK,data:{visibility:1,position:[0,0],objects:[]},state:{position:[0,0],direction:NORTH,shields:0,shots:0,status:TODO}}"));
-                return new JSONObject("{result:OK,data:{visibility:1,position:[0,0],objects:[]},state:{position:[0,0],direction:NORTH,shields:0,shots:0,status:TODO}}");
+                return new LaunchResponse(robot).executeRsponse(instruction);
             case "forward":
                 return new ForwardResponse(robot).executeRsponse(instruction);
             case "back":
@@ -61,10 +61,8 @@ public class Response {
                     return new LeftResponse(robot).executeRsponse();
                 }
             default:
-                System.out.println(new JSONObject("{result:ERROR,data:{message:Unsupported command}}"));
-                return new JSONObject("{result:ERROR,data:{message:Unsupported command}}");
+                return new FailedCommand(robot).executeRsponse();
         }
 
-//        return null;
     }
 }

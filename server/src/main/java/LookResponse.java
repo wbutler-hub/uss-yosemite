@@ -92,7 +92,7 @@ public class LookResponse extends Response {
     private String checkObjectType(Object value) {
         if (value.getClass() == SniperRobot.class ||
                 value.getClass() == TankRobot.class ||
-                value.getClass() == StandardRobot.class ||
+                value.getClass() == ShooterRobot.class ||
                 value.getClass() == FighterRobot.class) {
             return "Robot";
         } else if (value.getClass() == Obstacle.class) {

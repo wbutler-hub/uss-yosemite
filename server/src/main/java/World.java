@@ -65,15 +65,19 @@ public class World {
         int randNum = random.nextInt(9) +1;
 
         for(int i = 1; i <= randNum; i ++){
-            int randX = random.nextInt(this.width + this.width) - this.width;
-            int randY = random.nextInt(this.height + this.height) - this.height;
+//            int randX = random.nextInt(this.width + this.width) - this.width;
+//            int randY = random.nextInt(this.height + this.height) - this.height;
+            int randX = (int) Math.floor(Math.random() * (this.width - (- this.width) + 1) + (-this.width));
+            int randY = (int) Math.floor(Math.random() * (this.height - (- this.height) + 1) + (-this.height));
             Position randPosition1 = new Position(randX,randY);
             Position randPosition2 = new Position(randX+4,randY-4);
             Obstacle obstacle = new Obstacle(randPosition1,randPosition2);
             this.obstacleList.add(obstacle);
 
-            randX = random.nextInt(this.width + this.width) - this.width;
-            randY = random.nextInt(this.height + this.height) - this.height;
+//            randX = random.nextInt(this.width + this.width) - this.width;
+//            randY = random.nextInt(this.height + this.height) - this.height;
+            randX = (int) Math.floor(Math.random() * (this.width - (- this.width) + 1) + (-this.width));
+            randY = (int) Math.floor(Math.random() * (this.height - (- this.height) + 1) + (-this.height));
             randPosition1 = new Position(randX,randY);
             randPosition2 = new Position(randX+4,randY-4);
             Pit pit = new Pit(randPosition1,randPosition2);

@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ServerSetup implements Runnable{
     public static final int PORT = 5000;
@@ -15,6 +18,8 @@ public class ServerSetup implements Runnable{
     private JSONObject JsonData;
     private Response response;
     private final int index;
+    private static ArrayList<String> validCommands = new ArrayList<String>
+            (List.of("forward","back", "mine", "repair", "fire", "look", "reload", "turn"));
 
     /**
      * Used to set up the server, Takes the socket as a parameter. <br/>
@@ -44,65 +49,62 @@ public class ServerSetup implements Runnable{
      * */
     public void run() {
         try {
-            Robot robot = new StandardRobot("HAL");
+            Robot robot = new ShooterRobot("HAL");
             Command command;
 
             response = new Response(robot);
 
+            int nameCounter = 0;
             Object responseString;
             String messageFromClient;
             String jsonString; //String that was converted from a string to a JsonObject
             boolean requestUsed;  //Boolean used to determined if a request is being sent or if a name is being used
 
-            while((messageFromClient = in.readLine()) != null && !Thread.interrupted()
-            && robot.isAlive()) {
-
+            while((messageFromClient = in.readLine()) != null && !Thread.interrupted() && robot.isAlive()) {
                 requestUsed = messageFromClient.contains("{");
 
                 if (requestUsed) {
-
                     JsonData = new JSONObject(messageFromClient);
-
-                    System.out.println("JsonData: " + JsonData);
+                    if (nameCounter == 0) {
+                        if (Server.userNames.contains(getName())) {
+                            out.println(Response.setResult("NameInUse", robot).toString());
+                            continue;
+                        } else if (Server.userNames.size() >= 2) {
+                            out.println(Response.setResult("tooManyUsers", robot).toString());
+                            continue;
+                        } else {
+                            nameCounter++;
+                            Server.userNames.add(getName());
+                            ServerCommandLine.robotStates.put(getName(), "");
+                            ServerCommandLine.robotThreadIndexes.put(getName(), index);
+                        }
+                    }
 
                     jsonString = getCommand();
-                    System.out.println("jsonString: " + jsonString);
-                    if (jsonString.equals("launch") || jsonString.equals("luanch") ) {
+
+                    if (jsonString.equals("launch")) {
                         robot = Robot.create(getName(),getArgument().get(0).toString());
                         robot.addRobotPair();
 
+                        out.println(Objects.requireNonNull(Response.setResult(jsonString, robot)).toString());
+//                        continue;
+                    } else if (validCommands.contains(jsonString)) {
+                        jsonString = jsonString.concat(" ");
+                        for (int i = 0; i < getArgument().length(); i++) {
+                            jsonString = jsonString.concat(getArgument().get(i).toString());
+                        }
 
-                        System.out.println("aa: " + Response.setResult(JsonData.toString(), robot).toString()); //jsonstring = lauch
+                        jsonString = jsonString.trim();
+                        command = Command.create(jsonString);
+                        boolean shouldContinue = robot.handleCommand(command);
+
+                        ServerCommandLine.robotStates.put(robot.getName(), ServerCommandLine.getState(robot));
+
+                        System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
+
+                        out.println(Response.setResult(jsonString, robot).toString());
+                    } else {
                         out.println(Response.setResult(JsonData.toString(), robot).toString());
-
-
-                        continue;
-                    }
-
-                    jsonString = jsonString.concat(" ");
-                    for (int i = 0; i < getArgument().length(); i++) {
-                        jsonString = jsonString.concat(getArgument().get(i).toString());
-                    }
-
-                    jsonString = jsonString.trim();
-                    command = Command.create(jsonString);
-                    boolean shouldContinue = robot.handleCommand(command);
-
-                    ServerCommandLine.robotStates.put(robot.getName(), ServerCommandLine.getState(robot));
-
-                    System.out.println("Message \"" + messageFromClient + "\" from " + clientMachine);
-
-                    out.println(Response.setResult(jsonString, robot).toString());
-                }
-                else {
-                    if(Server.userNames.contains(messageFromClient)) {
-                        out.println("Too many of you in this world");
-                    }
-                    else {
-                        Server.userNames.add(messageFromClient);
-                        out.println("Username accepted!");
-                        ServerCommandLine.robotStates.put(messageFromClient, "");
-                        ServerCommandLine.robotThreadIndexes.put(messageFromClient, index);
                     }
                 }
             }
