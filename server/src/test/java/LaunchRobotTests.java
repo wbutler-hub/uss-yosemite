@@ -112,10 +112,10 @@ class LaunchRobotTests {
         assertNotNull(response.get("result"));
         assertEquals("ERROR", response.get("result").asText());
 
-        // Then I should get a response from the server that "Too many of you in the World""
+        // Then I should get a response from the server that "No more space in this world""
         assertNotNull(response.get("data"));
         assertNotNull(response.get("data").get("message"));
-        assertFalse(response.get("data").get("message").asText().contains("Too many of you in the World"));
+        assertTrue(response.get("data").get("message").asText().contains("No more space in this world"));
     }
 
     @Test
