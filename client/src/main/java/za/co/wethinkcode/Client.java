@@ -146,7 +146,7 @@ public class Client {
             launch = new LaunchRequest(name,"sniper",
                     1,1);
         }
-        else if (type.contains("standard")) {
+        else if (type.contains("shooter")) {
             launch = new LaunchRequest(name,"shooter",
                     3,3);
         }
