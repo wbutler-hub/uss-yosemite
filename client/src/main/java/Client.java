@@ -139,14 +139,14 @@ public class Client {
      * @return launch
      */
     private static LaunchRequest launchRequest(String type) {
-        LaunchRequest launch = new LaunchRequest(name,"standard",
+        LaunchRequest launch = new LaunchRequest(name,"shooter",
                 3,3);
         if (type.contains("sniper")) {
             launch = new LaunchRequest(name,"sniper",
                     1,1);
         }
-        else if (type.contains("standard")) {
-            launch = new LaunchRequest(name,"standard",
+        else if (type.contains("shooter")) {
+            launch = new LaunchRequest(name,"shooter",
                     3,3);
         }
         else if (type.contains("tank")) {
