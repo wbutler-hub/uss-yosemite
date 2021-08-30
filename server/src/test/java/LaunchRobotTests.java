@@ -80,6 +80,7 @@ class LaunchRobotTests {
         assertNotNull(response.get("data").get("message"));
         assertTrue(response.get("data").get("message").asText().contains("Unsupported command"));
     }
+
     @Test
     void nameAlreadyExists(){
         // Given that I am connected to a running Robot Worlds server
