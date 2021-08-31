@@ -178,21 +178,23 @@ class LaunchRobotTests {
         //Then I should get a response saying the current state of my robot
         assertNotNull(response.get("state"));
     }
-  @Test
-  void robotInvalidState(){
-      //When I send a valid launch request to the server
-      String request = "{" +
-        "  \"robot\": \"HAL\"," +
-        "  \"command\": \"luanch\"," +
-        "  \"arguments\": [\"tank\",\"5\",\"5\"]" +
-        "}";
-      JsonNode response = serverClient.sendRequest(request);
-      //And I want to check the current state of my robot
-      assertNotNull(response.get("state"));
 
-  //      And the Robot is not connected to the Robot World server
-  //      Then I should get and an "ERROR" message saying the robot is not connected to the world.
-      assertNotNull(response.get("result"));
-      assertEquals("ERROR", response.get("result").asText());
+    @Test
+    void robotInvalidState(){
+        // Given that I am connected to the server
+        assertTrue(serverClient.isConnected());
+
+        // When I send a valid state request to the server
+        // And I am not in the Robot World
+        String request = "{" +
+        "  \"robot\": \"HAL\"," +
+        "  \"command\": \"state\"," +
+        "  \"arguments\": []" +
+        "}";
+        JsonNode response = serverClient.sendRequest(request);
+
+        // Then I should get and an "ERROR" message saying the robot is not connected to the world.
+        assertNotNull(response.get("result"));
+        assertEquals("ERROR", response.get("result").asText());
   }
 }
